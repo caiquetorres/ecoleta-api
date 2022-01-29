@@ -1,19 +1,25 @@
 import { Injectable } from '@nestjs/common'
 import { GqlModuleOptions, GqlOptionsFactory } from '@nestjs/graphql'
 
-import { EnvService } from '../../env/env.service'
+import { EnvService } from '../../../env/env.service'
 
 import { join } from 'path'
 
 /**
- * Service that deals with the graphql configuration.
+ * Service that is responsible for creating the `GraphQL` configuration
+ * object.
+ *
+ * @usageNotes
+ * It must be assigned to `useClass` property inside the `GraphQLModule`
+ * factory options.
  */
 @Injectable()
 export class GqlConfigService implements GqlOptionsFactory {
   constructor(private readonly envService: EnvService) {}
 
   /**
-   * Method that creates a new configuration for graphql.
+   * Method that creates a new options object for the application
+   * graphql.
    *
    * @returns an object with all the graphql module configurations.
    */
