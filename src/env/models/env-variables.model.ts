@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsDefined,
   IsIn,
@@ -57,6 +58,39 @@ export class EnvVariables {
   @IsDefined({ message: 'It is required to set the throttler limit' })
   @IsNumber({}, { message: 'It is required to set a valid number' })
   THROTTLER_LIMIT: number
+
+  //#endregion
+
+  //#region GraphQL
+
+  @IsOptional()
+  @IsBoolean({ message: 'It is required to send a boolean value' })
+  public GQL_DEBUG?: boolean
+
+  @IsOptional()
+  @IsBoolean({ message: 'It is required to send a boolean value' })
+  public GQL_PLAYGROUND?: boolean
+
+  @IsOptional()
+  @IsString({ message: 'It is required to send a valid string value' })
+  public GQL_AUTO_SCHEMA_FILE?: string
+
+  @IsOptional()
+  @IsBoolean({ message: 'It is required to send a boolean value' })
+  public GQL_SORT_SCHEMA?: boolean
+
+  @IsOptional()
+  @IsArray({ message: 'It is required to send an array' })
+  public GQL_TYPE_PATHS?: string[]
+
+  @IsOptional()
+  @IsString({ message: 'It is required to send a valid string value' })
+  public GQL_DEFINITIONS_PATH?: string
+
+  @IsOptional()
+  @IsString({ message: 'It is required to send a valid string value' })
+  @IsIn(['class', 'interface'])
+  public GQL_DEFINITIONS_OUTPUT_AS?: 'class' | 'interface'
 
   //#endregion
 
