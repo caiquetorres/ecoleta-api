@@ -49,6 +49,10 @@ export class UserEntity extends BaseEntity {
   })
   email: string
 
+  /**
+   * Property that defines a `string` object, that represents the user
+   * password.
+   */
   @Column({
     type: 'varchar',
     nullable: false,
