@@ -10,6 +10,10 @@ import { IsDefined, IsEmail, IsString } from 'class-validator'
     'Input that handles all the data needed to create a new `user` entity.',
 })
 export class CreateUserInput {
+  /**
+   * Property that defines a `string` object, that represents the user
+   * name.
+   */
   @Field({
     nullable: false,
     description:
@@ -19,6 +23,10 @@ export class CreateUserInput {
   @IsString({ message: 'It is required to send a valid string' })
   name: string
 
+  /**
+   * Property that defines a `string` object, that represents the user
+   * email.
+   */
   @Field({
     nullable: false,
     description:
@@ -29,6 +37,10 @@ export class CreateUserInput {
   @IsEmail({}, { message: 'It is required to send a valid e-mail' })
   email: string
 
+  /**
+   * Property that defines a `string` object, that represents the user
+   * password.
+   */
   @Field({
     nullable: false,
     description:
