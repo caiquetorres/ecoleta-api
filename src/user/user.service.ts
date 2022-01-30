@@ -32,7 +32,7 @@ export class UserService {
    * @returns an object that represents the created entity.
    */
   async createOne(input: CreateUserInput) {
-    if (await this.hasUserWithEmail(input.email)) {
+    if (await this.getOneByEmail(input.email)) {
       throw new ConflictException(
         'An user with that e-mail has already been registered',
       )
@@ -55,7 +55,7 @@ export class UserService {
    * @param id defines the entity unique identifier.
    * @returns an object that represents the found entity.
    */
-  async getOne(id: string) {
+  async getOneById(id: string) {
     const user = await this.repository.findOne({ id })
     if (!user) {
       throw new NotFoundException(
@@ -72,8 +72,7 @@ export class UserService {
    * @param email defines the email that will be searched for.
    * @returns `true` if the user was found, otherwise `false`,
    */
-  private async hasUserWithEmail(email: string) {
-    const user = await this.repository.findOne({ email })
-    return !!user
+  async getOneByEmail(email: string) {
+    return await this.repository.findOne({ email })
   }
 }

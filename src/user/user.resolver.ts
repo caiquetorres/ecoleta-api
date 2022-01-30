@@ -50,6 +50,6 @@ export class UserResolver {
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
   ) {
-    return this.userService.getOne(id)
+    return this.userService.getOneById(id)
   }
 }
