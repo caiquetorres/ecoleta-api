@@ -9,6 +9,7 @@ import { AppResolver } from './app.resolver'
 import { EnvModule } from './env/env.module'
 import { PasswordModule } from './password/password.module'
 import { UserModule } from './user/user.module'
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserModule } from './user/user.module'
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
+    AuthModule,
   ],
   providers: [AppResolver],
 })
