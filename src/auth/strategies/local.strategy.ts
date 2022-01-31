@@ -23,7 +23,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
    * @returns an object that represents the found user, if the
    * credentials match.
    */
-  async validate(email: string, password: string) {
+  validate(email: string, password: string) {
     return this.authService.validateCredentials(email, password)
   }
 }
