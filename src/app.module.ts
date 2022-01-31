@@ -8,15 +8,18 @@ import { TypeOrmConfigService } from './common/config/typeorm/typeorm-config.ser
 import { AppResolver } from './app.resolver'
 import { AuthModule } from './auth/auth.module'
 import { EnvModule } from './env/env.module'
+import { ItemModule } from './item/item.module'
 import { PasswordModule } from './password/password.module'
 import { PermissionModule } from './permission/permission.module'
 import { UserModule } from './user/user.module'
 
 @Module({
   imports: [
+    AuthModule,
     PasswordModule,
     PermissionModule,
     UserModule,
+    ItemModule,
     EnvModule.forRoot({
       envFilePath: ['.env'],
     }),
@@ -26,7 +29,6 @@ import { UserModule } from './user/user.module'
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
     }),
-    AuthModule,
   ],
   providers: [AppResolver],
 })
