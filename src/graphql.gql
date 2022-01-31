@@ -2,7 +2,118 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+interface BaseEntity {
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `created`.
+  """
+  createdAt: DateTime!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `deleted`.
+  """
+  deletedAt: DateTime
+
+  """
+  Property that defines an `uuid` string type, that represents the entity unique identifier.
+  """
+  id: ID!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `updated`.
+  """
+  updatedAt: DateTime!
+}
+
+"""Input that handles all the data needed to create a new `user` entity."""
+input CreateUserInput {
+  """
+  Property that defines a `string` object, that represents the user email.
+  """
+  email: String!
+
+  """
+  Property that defines a `string` object, that represents the user name.
+  """
+  name: String!
+
+  """
+  Property that defines a `string` object, that represents the user password.
+  """
+  password: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginInput {
+  """Property that defines a `string` object, that represents the password"""
+  password: String!
+
+  """Property that defines a `string` object, that represents the username"""
+  username: String!
+}
+
+type Mutation {
+  """Mutation responsible for creating a new entity"""
+  createUser(input: CreateUserInput!): UserEntity!
+
+  """Mutation responsible for validating the username and password."""
+  login(input: LoginInput!): TokenModel!
+}
+
 type Query {
+  """Query responsible for finding the data of the request user."""
+  me: UserEntity!
+
   """Used for testing the api connection"""
   ping: String!
+
+  """Query responsible for finding one entity based on the id parameter."""
+  user(id: String!): UserEntity!
+}
+
+type TokenModel {
+  """Property that defines a `string` object, that represents the expiresIn"""
+  expiresIn: String!
+
+  """Property that defines a `string` object, that represents the token"""
+  token: String!
+}
+
+"""Entity that represents the project `user` entity."""
+type UserEntity implements BaseEntity {
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `created`.
+  """
+  createdAt: DateTime!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `deleted`.
+  """
+  deletedAt: DateTime
+
+  """
+  Property that defines a `string` object, that represents the user email.
+  """
+  email: String!
+
+  """
+  Property that defines an `uuid` string type, that represents the entity unique identifier.
+  """
+  id: ID!
+
+  """
+  Property that defines a `string` object, that represents the user name.
+  """
+  name: String!
+
+  """Property that defines an array with all the user roles."""
+  roles: [String!]!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `updated`.
+  """
+  updatedAt: DateTime!
 }
