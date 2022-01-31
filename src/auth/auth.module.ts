@@ -7,6 +7,7 @@ import { AuthService } from './auth.service'
 import { PasswordModule } from '../password/password.module'
 import { UserModule } from '../user/user.module'
 import { AuthResolver } from './auth.resolver'
+import { JwtStrategy } from './strategies/jwt.strategy'
 import { LocalStrategy } from './strategies/local.strategy'
 
 @Module({
@@ -17,6 +18,6 @@ import { LocalStrategy } from './strategies/local.strategy'
       useClass: JwtConfigService,
     }),
   ],
-  providers: [AuthResolver, AuthService, LocalStrategy],
+  providers: [AuthResolver, AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

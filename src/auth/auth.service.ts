@@ -39,14 +39,9 @@ export class AuthService {
    * which the token will be valid
    */
   async login(user: UserEntity) {
-    const { id, email, roles, deletedAt } = user
+    const { id } = user
     const token = await this.jwtService.signAsync(
-      {
-        id,
-        email,
-        roles,
-        deletedAt,
-      },
+      { id },
       { expiresIn: this.expiresIn },
     )
     return { token, expiresIn: this.expiresIn } as TokenModel
@@ -61,7 +56,7 @@ export class AuthService {
    * credentials match.
    */
   async validateCredentials(username: string, password: string) {
-    const user = await this.userService.getOneByEmail(username)
+    const user = await this.userService.findOneByEmail(username)
 
     if (!user) {
       throw new UnauthorizedException('The username or password are wrong')
@@ -77,5 +72,21 @@ export class AuthService {
     }
 
     return user
+  }
+
+  /**
+   * Method that checks if the entity exists and is active.
+   *
+   * @param id defines the entity unique identifier.
+   * @returns an object that represents the validated entity.
+   */
+  async validateUserById(id: string) {
+    const entity = await this.userService.findOneById(id)
+
+    if (!entity || entity.deletedAt) {
+      throw new UnauthorizedException('The informed token is no longer valid')
+    }
+
+    return entity
   }
 }
