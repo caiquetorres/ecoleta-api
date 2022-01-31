@@ -6,14 +6,16 @@ import { GqlConfigService } from './common/config/gql/gql-config.service'
 import { TypeOrmConfigService } from './common/config/typeorm/typeorm-config.service'
 
 import { AppResolver } from './app.resolver'
+import { AuthModule } from './auth/auth.module'
 import { EnvModule } from './env/env.module'
 import { PasswordModule } from './password/password.module'
+import { PermissionModule } from './permission/permission.module'
 import { UserModule } from './user/user.module'
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     PasswordModule,
+    PermissionModule,
     UserModule,
     EnvModule.forRoot({
       envFilePath: ['.env'],
