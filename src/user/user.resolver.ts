@@ -1,5 +1,9 @@
-import { ParseUUIDPipe } from '@nestjs/common'
+import { ParseUUIDPipe, UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+
+import { CurrentUser } from '../common/decorators/current-user/current-user.decorator'
+
+import { JwtGuard } from '../common/guards/jwt/jwt.guard'
 
 import { UserEntity } from './entities/user.entity'
 
@@ -41,6 +45,7 @@ export class UserResolver {
    * @param id defines the entity unique identifier.
    * @returns an object that represents the found entity.
    */
+  @UseGuards(JwtGuard)
   @Query(() => UserEntity, {
     name: 'user',
     description:
@@ -49,7 +54,27 @@ export class UserResolver {
   getOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
+    @CurrentUser()
+    currentUser: UserEntity,
   ) {
-    return this.userService.getOneById(id)
+    return this.userService.getOneById(id, currentUser)
+  }
+
+  /**
+   * Query responsible for finding the data of the request user.
+   *
+   * @param currentUser defines an object that represents the request user.
+   * @returns an object that contains all the request user data.
+   */
+  @UseGuards(JwtGuard)
+  @Query(() => UserEntity, {
+    name: 'me',
+    description: 'Query responsible for finding the data of the request user.',
+  })
+  getMe(
+    @CurrentUser()
+    currentUser: UserEntity,
+  ) {
+    return this.userService.getOneById(currentUser.id, currentUser)
   }
 }
