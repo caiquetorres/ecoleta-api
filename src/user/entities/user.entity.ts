@@ -6,7 +6,7 @@ import { BaseEntity } from '../../common/entities/base.entity'
 import { RoleEnum } from '../../common/models/role.enum'
 
 /**
- * Entity that represents the project `user` entity.
+ * Entity that represents the `user` entity.
  */
 @Entity('user')
 @ObjectType({
@@ -21,6 +21,7 @@ export class UserEntity extends BaseEntity {
    * name.
    */
   @Field({
+    nullable: false,
     description:
       'Property that defines a `string` object, that represents the user name.',
   })
@@ -38,6 +39,7 @@ export class UserEntity extends BaseEntity {
    * It must be unique.
    */
   @Field({
+    nullable: false,
     description:
       'Property that defines a `string` object, that represents the user email.',
   })
@@ -64,6 +66,7 @@ export class UserEntity extends BaseEntity {
    * Property that defines an array with all the user roles.
    */
   @Field(() => [String], {
+    nullable: false,
     description: 'Property that defines an array with all the user roles.',
   })
   @Column({
