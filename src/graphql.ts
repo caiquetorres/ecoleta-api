@@ -13,6 +13,11 @@ export interface CreateUserInput {
     password: string;
 }
 
+export interface LoginInput {
+    password: string;
+    username: string;
+}
+
 export interface BaseEntity {
     createdAt: DateTime;
     deletedAt?: Nullable<DateTime>;
@@ -22,11 +27,18 @@ export interface BaseEntity {
 
 export interface IMutation {
     createUser(input: CreateUserInput): UserEntity | Promise<UserEntity>;
+    login(input: LoginInput): TokenModel | Promise<TokenModel>;
 }
 
 export interface IQuery {
+    me(): UserEntity | Promise<UserEntity>;
     ping(): string | Promise<string>;
     user(id: string): UserEntity | Promise<UserEntity>;
+}
+
+export interface TokenModel {
+    expiresIn: string;
+    token: string;
 }
 
 export interface UserEntity extends BaseEntity {

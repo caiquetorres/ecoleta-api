@@ -47,17 +47,39 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input LoginInput {
+  """Property that defines a `string` object, that represents the password"""
+  password: String!
+
+  """Property that defines a `string` object, that represents the username"""
+  username: String!
+}
+
 type Mutation {
   """Mutation responsible for creating a new entity"""
   createUser(input: CreateUserInput!): UserEntity!
+
+  """Mutation responsible for validating the username and password."""
+  login(input: LoginInput!): TokenModel!
 }
 
 type Query {
+  """Query responsible for finding the data of the request user."""
+  me: UserEntity!
+
   """Used for testing the api connection"""
   ping: String!
 
   """Query responsible for finding one entity based on the id parameter."""
   user(id: String!): UserEntity!
+}
+
+type TokenModel {
+  """Property that defines a `string` object, that represents the expiresIn"""
+  expiresIn: String!
+
+  """Property that defines a `string` object, that represents the token"""
+  token: String!
 }
 
 """Entity that represents the project `user` entity."""
