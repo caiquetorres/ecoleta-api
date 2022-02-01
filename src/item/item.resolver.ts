@@ -7,6 +7,7 @@ import { ItemEntity } from './entities/item.entity'
 
 import { RoleEnum } from '../common/models/role.enum'
 import { CreateItemInput } from './dtos/create-item.input'
+import { QueryItemsArgs } from './dtos/query-items.args'
 
 import { ItemService } from './item.service'
 
@@ -54,5 +55,23 @@ export class ItemResolver {
     id: string,
   ) {
     return this.itemService.getOne(id)
+  }
+
+  /**
+   * Method responsible for finding several entities based on the
+   * `query` parameter.
+   *
+   * @param query defines an object that contains the data needed for
+   * filtering, sorting and paginating the found entity.
+   * @returns an object that contains all the found data.
+   */
+  @Query(() => QueryItemsArgs.ConnectionType, {
+    name: 'items',
+  })
+  getMany(
+    @Args()
+    query: QueryItemsArgs,
+  ) {
+    return this.itemService.getMany(query)
   }
 }

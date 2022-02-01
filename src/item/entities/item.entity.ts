@@ -1,4 +1,5 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { FilterableField } from '@nestjs-query/query-graphql'
+import { ObjectType } from '@nestjs/graphql'
 import { Column, Entity } from 'typeorm'
 
 import { BaseEntity } from '../../common/entities/base.entity'
@@ -17,7 +18,7 @@ export class ItemEntity extends BaseEntity {
    * Property that defines a `string` object that represents the item
    * name.
    */
-  @Field({
+  @FilterableField({
     nullable: false,
     description:
       'Property that defines a `string` object that represents the item name.',
