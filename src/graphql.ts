@@ -7,6 +7,10 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export interface CreateItemInput {
+    name: string;
+}
+
 export interface CreateUserInput {
     email: string;
     name: string;
@@ -25,12 +29,22 @@ export interface BaseEntity {
     updatedAt: DateTime;
 }
 
+export interface ItemEntity extends BaseEntity {
+    createdAt: DateTime;
+    deletedAt?: Nullable<DateTime>;
+    id: string;
+    name: string;
+    updatedAt: DateTime;
+}
+
 export interface IMutation {
+    createItem(input: CreateItemInput): ItemEntity | Promise<ItemEntity>;
     createUser(input: CreateUserInput): UserEntity | Promise<UserEntity>;
     login(input: LoginInput): TokenModel | Promise<TokenModel>;
 }
 
 export interface IQuery {
+    item(id: string): ItemEntity | Promise<ItemEntity>;
     me(): UserEntity | Promise<UserEntity>;
     ping(): string | Promise<string>;
     user(id: string): UserEntity | Promise<UserEntity>;

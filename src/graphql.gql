@@ -24,6 +24,12 @@ interface BaseEntity {
   updatedAt: DateTime!
 }
 
+"""Input that handles all the data needed to create a new `item` entity."""
+input CreateItemInput {
+  """Property that defines a `string` object that represents the item name."""
+  name: String!
+}
+
 """Input that handles all the data needed to create a new `user` entity."""
 input CreateUserInput {
   """
@@ -47,6 +53,31 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type ItemEntity implements BaseEntity {
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `created`.
+  """
+  createdAt: DateTime!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `deleted`.
+  """
+  deletedAt: DateTime
+
+  """
+  Property that defines an `uuid` string type, that represents the entity unique identifier.
+  """
+  id: ID!
+
+  """Property that defines a `string` object that represents the item name."""
+  name: String!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `updated`.
+  """
+  updatedAt: DateTime!
+}
+
 input LoginInput {
   """Property that defines a `string` object, that represents the password"""
   password: String!
@@ -56,6 +87,9 @@ input LoginInput {
 }
 
 type Mutation {
+  """Mutation responsible for creating a new entity."""
+  createItem(input: CreateItemInput!): ItemEntity!
+
   """Mutation responsible for creating a new entity"""
   createUser(input: CreateUserInput!): UserEntity!
 
@@ -64,6 +98,9 @@ type Mutation {
 }
 
 type Query {
+  """Query responsible for finding one entity based on the id parameter."""
+  item(id: String!): ItemEntity!
+
   """Query responsible for finding the data of the request user."""
   me: UserEntity!
 
