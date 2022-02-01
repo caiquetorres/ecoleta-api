@@ -58,7 +58,7 @@ export class UserService {
    * @param id defines the entity unique identifier.
    * @returns an object that represents the found entity.
    */
-  async getOneById(id: string, currentUser: UserEntity) {
+  async getOne(id: string, currentUser: UserEntity) {
     if (!this.permissionService.hasPermission(id, currentUser)) {
       throw new ForbiddenException(
         'You have no permission to access these sources.',
@@ -81,7 +81,7 @@ export class UserService {
    * @param id defines the entity unique identifier.
    * @returns an object that represents the found entity.
    */
-  async findOneById(id: string) {
+  findOneById(id: string) {
     return this.repository.findOne({ id })
   }
 

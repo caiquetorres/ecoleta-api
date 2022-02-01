@@ -57,7 +57,7 @@ export class UserResolver {
     @CurrentUser()
     currentUser: UserEntity,
   ) {
-    return this.userService.getOneById(id, currentUser)
+    return this.userService.getOne(id, currentUser)
   }
 
   /**
@@ -75,6 +75,6 @@ export class UserResolver {
     @CurrentUser()
     currentUser: UserEntity,
   ) {
-    return this.userService.getOneById(currentUser.id, currentUser)
+    return this.userService.getOne(currentUser.id, currentUser)
   }
 }
