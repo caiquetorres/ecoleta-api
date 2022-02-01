@@ -1,5 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql'
-import { BaseEntity, Column, Entity } from 'typeorm'
+import { Column, Entity } from 'typeorm'
+
+import { BaseEntity } from '../../common/entities/base.entity'
 
 /**
  * Entity that represents the `item` entity.
