@@ -81,7 +81,7 @@ export class AuthService {
    * @returns an object that represents the validated entity.
    */
   async validateUserById(id: string) {
-    const entity = await this.userService.findOneById(id)
+    const entity = await this.userService.findById(id)
 
     if (!entity || entity.deletedAt) {
       throw new UnauthorizedException('The informed token is no longer valid')

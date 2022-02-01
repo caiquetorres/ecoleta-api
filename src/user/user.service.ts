@@ -1,3 +1,4 @@
+import { TypeOrmQueryService } from '@nestjs-query/query-typeorm'
 import {
   ConflictException,
   ForbiddenException,
@@ -20,13 +21,15 @@ import { PermissionService } from '../permission/permission.service'
  * `user` entity.
  */
 @Injectable()
-export class UserService {
+export class UserService extends TypeOrmQueryService<UserEntity> {
   constructor(
     @InjectRepository(UserEntity)
     private readonly repository: Repository<UserEntity>,
     private readonly passwordService: PasswordService,
     private readonly permissionService: PermissionService,
-  ) {}
+  ) {
+    super(repository)
+  }
 
   /**
    * Method responsible for creating a new entity.
@@ -65,24 +68,13 @@ export class UserService {
       )
     }
 
-    const user = await this.findOneById(id)
+    const user = await this.findById(id)
     if (!user) {
       throw new NotFoundException(
         `The entity identified by \'${id}\' of type \'${UserEntity.name}\' was not found`,
       )
     }
     return user
-  }
-
-  /**
-   * Method responsible for finding one entity based on the `id`
-   * parameter.
-   *
-   * @param id defines the entity unique identifier.
-   * @returns an object that represents the found entity.
-   */
-  findOneById(id: string) {
-    return this.repository.findOne({ id })
   }
 
   /**
