@@ -17,7 +17,7 @@ export abstract class TypeOrmQueryService<T extends BaseEntity> {
    * @param id defines the entity unique identifier.
    * @returns an object that represents the found entity.
    */
-  async findOneById(id: string) {
+  findOneById(id: string) {
     return this.repository.findOne(id)
   }
 
