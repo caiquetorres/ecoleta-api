@@ -8,6 +8,7 @@ import { TypeOrmConfigService } from './common/config/typeorm/typeorm-config.ser
 import { AppResolver } from './app.resolver'
 import { AuthModule } from './auth/auth.module'
 import { EnvModule } from './env/env.module'
+import { ImageModule } from './image/image.module'
 import { ItemModule } from './item/item.module'
 import { PasswordModule } from './password/password.module'
 import { PermissionModule } from './permission/permission.module'
@@ -20,6 +21,7 @@ import { UserModule } from './user/user.module'
     PermissionModule,
     UserModule,
     ItemModule,
+    ImageModule,
     EnvModule.forRoot({
       envFilePath: ['.env'],
     }),
