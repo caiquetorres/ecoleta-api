@@ -117,8 +117,8 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
       )
     }
 
-    await this.repository.delete(item)
-    return this.repository.findOne(id)
+    await this.repository.delete(id)
+    return item
   }
 
   /**
@@ -137,8 +137,8 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
       )
     }
 
-    await this.repository.softDelete(item)
-    return this.repository.findOne(id)
+    await this.repository.softDelete(id)
+    return this.repository.findOne(id, { withDeleted: true })
   }
 
   /**
@@ -148,7 +148,7 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
    * @returns an object that represents the enabled entity.
    */
   async enableOne(id: string) {
-    const item = await this.repository.findOne(id)
+    const item = await this.repository.findOne(id, { withDeleted: true })
 
     if (!item) {
       throw new NotFoundException(
@@ -156,7 +156,7 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
       )
     }
 
-    await this.repository.restore(item)
+    await this.repository.restore(id)
     return this.repository.findOne(id)
   }
 }
