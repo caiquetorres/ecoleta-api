@@ -2,11 +2,13 @@ import { ParseUUIDPipe, UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { CurrentUser } from '../common/decorators/current-user/current-user.decorator'
+import { Protect } from '../common/decorators/protect/protect.decorator'
 
 import { JwtGuard } from '../common/guards/jwt/jwt.guard'
 
 import { UserEntity } from './entities/user.entity'
 
+import { RoleEnum } from '../common/models/role.enum'
 import { CreateUserInput } from './dtos/create-user.input'
 import { UpdateUserInput } from './dtos/update-user.input'
 
@@ -90,6 +92,11 @@ export class UserResolver {
    * requesting this action.
    * @returns an object that represents the created entity.
    */
+  @UseGuards(JwtGuard)
+  @Mutation(() => UserEntity, {
+    name: 'updateUser',
+    description: 'Mutation responsible for updating some entity data',
+  })
   updateOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
@@ -112,6 +119,11 @@ export class UserResolver {
    * requesting this action.
    * @returns an object that represents the created entity.
    */
+  @UseGuards(JwtGuard)
+  @Mutation(() => UserEntity, {
+    name: 'deleteUser',
+    description: 'Mutation responsible for deleting some entity data',
+  })
   deleteOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
@@ -129,6 +141,11 @@ export class UserResolver {
    * requesting this action.
    * @returns an object that represents the created entity.
    */
+  @UseGuards(JwtGuard)
+  @Mutation(() => UserEntity, {
+    name: 'disableUser',
+    description: 'Mutation responsible for disabling some entity data',
+  })
   disableOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
@@ -146,6 +163,11 @@ export class UserResolver {
    * requesting this action.
    * @returns an object that represents the created entity.
    */
+  @Protect(RoleEnum.admin)
+  @Mutation(() => UserEntity, {
+    name: 'enableUser',
+    description: 'Mutation responsible for enabling some entity data',
+  })
   enableOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,

@@ -129,8 +129,8 @@ export class UserService extends TypeOrmQueryService<UserEntity> {
       )
     }
 
-    await this.repository.delete(user)
-    return this.repository.findOne(id)
+    await this.repository.delete(id)
+    return user
   }
 
   /**
@@ -155,8 +155,8 @@ export class UserService extends TypeOrmQueryService<UserEntity> {
       )
     }
 
-    await this.repository.softDelete(user)
-    return this.repository.findOne(id)
+    await this.repository.softDelete(id)
+    return this.repository.findOne(id, { withDeleted: true })
   }
 
   /**
@@ -172,7 +172,7 @@ export class UserService extends TypeOrmQueryService<UserEntity> {
       )
     }
 
-    const user = await this.repository.findOne(id)
+    const user = await this.repository.findOne(id, { withDeleted: true })
 
     if (!user) {
       throw new NotFoundException(
@@ -180,7 +180,7 @@ export class UserService extends TypeOrmQueryService<UserEntity> {
       )
     }
 
-    await this.repository.restore(user)
+    await this.repository.restore(id)
     return this.repository.findOne(id)
   }
 
