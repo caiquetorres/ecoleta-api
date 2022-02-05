@@ -1,26 +1,26 @@
 import { ParseUUIDPipe } from '@nestjs/common'
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { Args, Query, Mutation, Resolver } from '@nestjs/graphql'
 
 import { Protect } from '../common/decorators/protect/protect.decorator'
 
-import { ItemEntity } from './entities/item.entity'
+import { ImageEntity } from './entities/image.entity'
 
 import { RoleEnum } from '../common/models/role.enum'
-import { CreateItemInput } from './dtos/create-item.input'
-import { QueryItemsArgs } from './dtos/query-items.args'
-import { UpdateItemInput } from './dtos/update-item.input'
+import { CreateImageInput } from './dtos/create-image.input'
+import { QueryImagesArgs } from './dtos/query-image.args'
+import { UpdateImageInput } from './dtos/update-image.input'
 
-import { ItemService } from './item.service'
+import { ImageService } from './image.service'
 
 /**
  * Resolver that deals with all the `queries` and `mutations` related
- * with the `ItemEntity` class.
+ * with the `image` entity.
  *
- * @see {@link ItemEntity}
+ * @see {@link ImageEntity}
  */
-@Resolver(() => ItemEntity)
-export class ItemResolver {
-  constructor(private readonly service: ItemService) {}
+@Resolver(() => ImageEntity)
+export class ImageResolver {
+  constructor(private readonly service: ImageService) {}
 
   /**
    * Mutation responsible for creating a new entity.
@@ -29,25 +29,27 @@ export class ItemResolver {
    * @returns an object that represents the created entity.
    */
   @Protect(RoleEnum.admin)
-  @Mutation(() => ItemEntity, {
-    name: 'createItem',
+  @Mutation(() => ImageEntity, {
+    name: 'createImage',
     description: 'Mutation responsible for creating a new entity.',
   })
   createOne(
-    @Args('input', { type: () => CreateItemInput })
-    input: CreateItemInput,
+    @Args('input', { type: () => CreateImageInput })
+    input: CreateImageInput,
   ) {
     return this.service.createOne(input)
   }
 
   /**
-   * Query responsible for finding one entity based on the id parameter.
+   * Query responsible for finding one entity based on the id
+   * parameter.
    *
    * @param id defines the entity unique identifier.
    * @returns an object that represents the found entity.
    */
-  @Query(() => ItemEntity, {
-    name: 'item',
+  @Protect(RoleEnum.admin)
+  @Query(() => ImageEntity, {
+    name: 'image',
     description:
       'Query responsible for finding one entity based on the id parameter.',
   })
@@ -66,14 +68,15 @@ export class ItemResolver {
    * filtering, sorting and paginating the found entity.
    * @returns an object that contains all the found data.
    */
-  @Query(() => QueryItemsArgs.ConnectionType, {
-    name: 'items',
+  @Protect(RoleEnum.admin)
+  @Query(() => QueryImagesArgs.ConnectionType, {
+    name: 'images',
     description:
       'Query responsible for finding several entities based on the input data.',
   })
   getMany(
     @Args()
-    query: QueryItemsArgs,
+    query: QueryImagesArgs,
   ) {
     return this.service.getMany(query)
   }
@@ -88,50 +91,50 @@ export class ItemResolver {
    * @returns an object that represents the updated entity.
    */
   @Protect(RoleEnum.admin)
-  @Mutation(() => ItemEntity, {
-    name: 'updateItem',
+  @Mutation(() => ImageEntity, {
+    name: 'updateImage',
     description:
       'responsible for updating some entity based on the sent `input` parameter.',
   })
   updateOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
-    @Args('input', { type: () => UpdateItemInput })
-    input: UpdateItemInput,
+    @Args('input', { type: () => UpdateImageInput })
+    input: UpdateImageInput,
   ) {
     return this.service.updateOne(id, input)
   }
 
   /**
-   * Mutation responsible for deleting some entity based on the sent
-   * `id` parameter.
+   * Mutation responsible for deleting some entity based on the sent `id`
+   * parameter.
    *
    * @param id defines the entity unique identifier.
    * @returns an object that represents the disabled entity.
    */
   @Protect(RoleEnum.admin)
-  @Mutation(() => ItemEntity, {
-    name: 'deleteItem',
+  @Mutation(() => ImageEntity, {
+    name: 'deleteImage',
     description:
       'Mutation responsible for deleting some entity based on the `id` parameter.',
   })
   deleteOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
-  ): Promise<ItemEntity> {
+  ): Promise<ImageEntity> {
     return this.service.deleteOne(id)
   }
 
   /**
-   * Mutation responsible for disabling some entity based on the sent
-   * `id` parameter.
+   * Mutation responsible for disabling some entity based on the sent `id`
+   * parameter.
    *
    * @param id defines the entity unique identifier.
    * @returns an object that represents the disabled entity.
    */
   @Protect(RoleEnum.admin)
-  @Mutation(() => ItemEntity, {
-    name: 'disableItem',
+  @Mutation(() => ImageEntity, {
+    name: 'disableImage',
     description:
       'Mutation responsible for disabling some entity based on the `id` parameter.',
   })
@@ -150,8 +153,8 @@ export class ItemResolver {
    * @returns an object that represents the enabled entity.
    */
   @Protect(RoleEnum.admin)
-  @Mutation(() => ItemEntity, {
-    name: 'enableItem',
+  @Mutation(() => ImageEntity, {
+    name: 'enableImage',
     description:
       'Mutation responsible for enabling some entity based on the `id` parameter.',
   })

@@ -27,6 +27,11 @@ interface BaseEntity {
 """Cursor for paging through collections"""
 scalar ConnectionCursor
 
+input CreateImageInput {
+  title: String
+  url: String!
+}
+
 """Input that handles all the data needed to create a new `item` entity."""
 input CreateItemInput {
   """Property that defines a `string` object that represents the item name."""
@@ -69,6 +74,64 @@ input CursorPaging {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type ImageEntity implements BaseEntity {
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `created`.
+  """
+  createdAt: DateTime!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `deleted`.
+  """
+  deletedAt: DateTime
+
+  """
+  Property that defines an `uuid` string type, that represents the entity unique identifier.
+  """
+  id: ID!
+  title: String
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `updated`.
+  """
+  updatedAt: DateTime!
+  url: String!
+}
+
+type ImageEntityConnection {
+  """Array of edges."""
+  edges: [ImageEntityEdge!]!
+
+  """Paging information"""
+  pageInfo: PageInfo!
+}
+
+type ImageEntityEdge {
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+
+  """The node containing the ImageEntity"""
+  node: ImageEntity!
+}
+
+input ImageEntityFilter {
+  and: [ImageEntityFilter!]
+  or: [ImageEntityFilter!]
+  title: StringFieldComparison
+  url: StringFieldComparison
+}
+
+input ImageEntitySort {
+  direction: SortDirection!
+  field: ImageEntitySortFields!
+  nulls: SortNulls
+}
+
+enum ImageEntitySortFields {
+  title
+  url
+}
 
 type ItemEntity implements BaseEntity {
   """
@@ -137,10 +200,18 @@ input LoginInput {
 
 type Mutation {
   """Mutation responsible for creating a new entity."""
+  createImage(input: CreateImageInput!): ImageEntity!
+
+  """Mutation responsible for creating a new entity."""
   createItem(input: CreateItemInput!): ItemEntity!
 
   """Mutation responsible for creating a new entity"""
   createUser(input: CreateUserInput!): UserEntity!
+
+  """
+  Mutation responsible for deleting some entity based on the `id` parameter.
+  """
+  deleteImage(id: String!): ImageEntity!
 
   """
   Mutation responsible for deleting some entity based on the `id` parameter.
@@ -153,10 +224,20 @@ type Mutation {
   """
   Mutation responsible for disabling some entity based on the `id` parameter.
   """
+  disableImage(id: String!): ImageEntity!
+
+  """
+  Mutation responsible for disabling some entity based on the `id` parameter.
+  """
   disableItem(id: String!): ItemEntity!
 
   """Mutation responsible for disabling some entity data"""
   disableUser(id: String!): UserEntity!
+
+  """
+  Mutation responsible for enabling some entity based on the `id` parameter.
+  """
+  enableImage(id: String!): ImageEntity!
 
   """
   Mutation responsible for enabling some entity based on the `id` parameter.
@@ -168,6 +249,11 @@ type Mutation {
 
   """Mutation responsible for validating the username and password."""
   login(input: LoginInput!): TokenModel!
+
+  """
+  responsible for updating some entity based on the sent `input` parameter.
+  """
+  updateImage(id: String!, input: UpdateImageInput!): ImageEntity!
 
   """
   responsible for updating some entity based on the sent `input` parameter.
@@ -193,6 +279,23 @@ type PageInfo {
 }
 
 type Query {
+  """Query responsible for finding one entity based on the id parameter."""
+  image(id: String!): ImageEntity!
+
+  """
+  Query responsible for finding several entities based on the input data.
+  """
+  images(
+    """Specify to filter the records returned."""
+    filter: ImageEntityFilter = {}
+
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to sort results."""
+    sorting: [ImageEntitySort!] = []
+  ): ImageEntityConnection!
+
   """Query responsible for finding one entity based on the id parameter."""
   item(id: String!): ItemEntity!
 
@@ -255,6 +358,12 @@ type TokenModel {
 
   """Property that defines a `string` object, that represents the token"""
   token: String!
+}
+
+"""Input that handles all the data needed to update some `image` entity."""
+input UpdateImageInput {
+  title: String
+  url: String!
 }
 
 """Input that handles all the data needed to update a new `item` entity."""

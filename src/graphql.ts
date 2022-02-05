@@ -7,6 +7,11 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export enum ImageEntitySortFields {
+    title = "title",
+    url = "url"
+}
+
 export enum ItemEntitySortFields {
     name = "name"
 }
@@ -19,6 +24,11 @@ export enum SortDirection {
 export enum SortNulls {
     NULLS_FIRST = "NULLS_FIRST",
     NULLS_LAST = "NULLS_LAST"
+}
+
+export interface CreateImageInput {
+    title?: Nullable<string>;
+    url: string;
 }
 
 export interface CreateItemInput {
@@ -36,6 +46,19 @@ export interface CursorPaging {
     before?: Nullable<ConnectionCursor>;
     first?: Nullable<number>;
     last?: Nullable<number>;
+}
+
+export interface ImageEntityFilter {
+    and?: Nullable<ImageEntityFilter[]>;
+    or?: Nullable<ImageEntityFilter[]>;
+    title?: Nullable<StringFieldComparison>;
+    url?: Nullable<StringFieldComparison>;
+}
+
+export interface ImageEntitySort {
+    direction: SortDirection;
+    field: ImageEntitySortFields;
+    nulls?: Nullable<SortNulls>;
 }
 
 export interface ItemEntityFilter {
@@ -72,6 +95,11 @@ export interface StringFieldComparison {
     notLike?: Nullable<string>;
 }
 
+export interface UpdateImageInput {
+    title?: Nullable<string>;
+    url: string;
+}
+
 export interface UpdateItemInput {
     name?: Nullable<string>;
 }
@@ -85,6 +113,25 @@ export interface BaseEntity {
     deletedAt?: Nullable<DateTime>;
     id: string;
     updatedAt: DateTime;
+}
+
+export interface ImageEntity extends BaseEntity {
+    createdAt: DateTime;
+    deletedAt?: Nullable<DateTime>;
+    id: string;
+    title?: Nullable<string>;
+    updatedAt: DateTime;
+    url: string;
+}
+
+export interface ImageEntityConnection {
+    edges: ImageEntityEdge[];
+    pageInfo: PageInfo;
+}
+
+export interface ImageEntityEdge {
+    cursor: ConnectionCursor;
+    node: ImageEntity;
 }
 
 export interface ItemEntity extends BaseEntity {
@@ -106,15 +153,20 @@ export interface ItemEntityEdge {
 }
 
 export interface IMutation {
+    createImage(input: CreateImageInput): ImageEntity | Promise<ImageEntity>;
     createItem(input: CreateItemInput): ItemEntity | Promise<ItemEntity>;
     createUser(input: CreateUserInput): UserEntity | Promise<UserEntity>;
+    deleteImage(id: string): ImageEntity | Promise<ImageEntity>;
     deleteItem(id: string): ItemEntity | Promise<ItemEntity>;
     deleteUser(id: string): UserEntity | Promise<UserEntity>;
+    disableImage(id: string): ImageEntity | Promise<ImageEntity>;
     disableItem(id: string): ItemEntity | Promise<ItemEntity>;
     disableUser(id: string): UserEntity | Promise<UserEntity>;
+    enableImage(id: string): ImageEntity | Promise<ImageEntity>;
     enableItem(id: string): ItemEntity | Promise<ItemEntity>;
     enableUser(id: string): UserEntity | Promise<UserEntity>;
     login(input: LoginInput): TokenModel | Promise<TokenModel>;
+    updateImage(id: string, input: UpdateImageInput): ImageEntity | Promise<ImageEntity>;
     updateItem(id: string, input: UpdateItemInput): ItemEntity | Promise<ItemEntity>;
     updateUser(id: string, input: UpdateUserInput): UserEntity | Promise<UserEntity>;
 }
@@ -127,6 +179,8 @@ export interface PageInfo {
 }
 
 export interface IQuery {
+    image(id: string): ImageEntity | Promise<ImageEntity>;
+    images(filter?: Nullable<ImageEntityFilter>, paging?: Nullable<CursorPaging>, sorting?: Nullable<ImageEntitySort[]>): ImageEntityConnection | Promise<ImageEntityConnection>;
     item(id: string): ItemEntity | Promise<ItemEntity>;
     items(filter?: Nullable<ItemEntityFilter>, paging?: Nullable<CursorPaging>, sorting?: Nullable<ItemEntitySort[]>): ItemEntityConnection | Promise<ItemEntityConnection>;
     me(): UserEntity | Promise<UserEntity>;
