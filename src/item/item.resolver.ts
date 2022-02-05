@@ -103,12 +103,13 @@ export class ItemResolver {
   }
 
   /**
-   * Mutation responsible for deleting some entity based on the sent `id`
-   * parameter.
+   * Mutation responsible for deleting some entity based on the sent
+   * `id` parameter.
    *
    * @param id defines the entity unique identifier.
    * @returns an object that represents the disabled entity.
    */
+  @Protect(RoleEnum.admin)
   @Mutation(() => ItemEntity, {
     name: 'deleteItem',
     description:
@@ -122,12 +123,13 @@ export class ItemResolver {
   }
 
   /**
-   * Mutation responsible for disabling some entity based on the sent `id`
-   * parameter.
+   * Mutation responsible for disabling some entity based on the sent
+   * `id` parameter.
    *
    * @param id defines the entity unique identifier.
    * @returns an object that represents the disabled entity.
    */
+  @Protect(RoleEnum.admin)
   @Mutation(() => ItemEntity, {
     name: 'disableItem',
     description:
@@ -141,12 +143,13 @@ export class ItemResolver {
   }
 
   /**
-   * Mutation responsible for enabling some entity based on the sent `id`
-   * parameter.
+   * Mutation responsible for enabling some entity based on the sent
+   * `id` parameter.
    *
    * @param id defines the entity unique identifier.
    * @returns an object that represents the enabled entity.
    */
+  @Protect(RoleEnum.admin)
   @Mutation(() => ItemEntity, {
     name: 'enableItem',
     description:
