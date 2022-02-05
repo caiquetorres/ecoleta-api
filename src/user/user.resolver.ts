@@ -2,12 +2,15 @@ import { ParseUUIDPipe, UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 import { CurrentUser } from '../common/decorators/current-user/current-user.decorator'
+import { Protect } from '../common/decorators/protect/protect.decorator'
 
 import { JwtGuard } from '../common/guards/jwt/jwt.guard'
 
 import { UserEntity } from './entities/user.entity'
 
+import { RoleEnum } from '../common/models/role.enum'
 import { CreateUserInput } from './dtos/create-user.input'
+import { UpdateUserInput } from './dtos/update-user.input'
 
 import { UserService } from './user.service'
 
@@ -19,7 +22,7 @@ import { UserService } from './user.service'
  */
 @Resolver(() => UserEntity)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly service: UserService) {}
 
   /**
    * Mutation responsible for creating a new entity.
@@ -35,7 +38,7 @@ export class UserResolver {
     @Args('input', { type: () => CreateUserInput })
     input: CreateUserInput,
   ) {
-    return this.userService.createOne(input)
+    return this.service.createOne(input)
   }
 
   /**
@@ -43,6 +46,8 @@ export class UserResolver {
    * parameter.
    *
    * @param id defines the entity unique identifier.
+   * @param currentUser defines an object that represenst the user that is
+   * requesting this action.
    * @returns an object that represents the found entity.
    */
   @UseGuards(JwtGuard)
@@ -57,7 +62,7 @@ export class UserResolver {
     @CurrentUser()
     currentUser: UserEntity,
   ) {
-    return this.userService.getOneById(id, currentUser)
+    return this.service.getOne(id, currentUser)
   }
 
   /**
@@ -75,6 +80,100 @@ export class UserResolver {
     @CurrentUser()
     currentUser: UserEntity,
   ) {
-    return this.userService.getOneById(currentUser.id, currentUser)
+    return this.service.getOne(currentUser.id, currentUser)
+  }
+
+  /**
+   * Mutation responsible for updating some entity data.
+   *
+   * @param id defines the entity unique identifier.
+   * @param input defines an object that contains all the new entity data.
+   * @param currentUser defines an object that represenst the user that is
+   * requesting this action.
+   * @returns an object that represents the created entity.
+   */
+  @UseGuards(JwtGuard)
+  @Mutation(() => UserEntity, {
+    name: 'updateUser',
+    description: 'Mutation responsible for updating some entity data',
+  })
+  updateOne(
+    @Args('id', { nullable: false }, ParseUUIDPipe)
+    id: string,
+    @Args('input', {
+      nullable: false,
+      type: () => UpdateUserInput,
+    })
+    input: UpdateUserInput,
+    @CurrentUser()
+    currentUser: UserEntity,
+  ) {
+    return this.service.updateOne(id, input, currentUser)
+  }
+
+  /**
+   * Mutation responsible for deleting some entity.
+   *
+   * @param id defines the entity unique identifier.
+   * @param currentUser defines an object that represenst the user that is
+   * requesting this action.
+   * @returns an object that represents the created entity.
+   */
+  @UseGuards(JwtGuard)
+  @Mutation(() => UserEntity, {
+    name: 'deleteUser',
+    description: 'Mutation responsible for deleting some entity data',
+  })
+  deleteOne(
+    @Args('id', { nullable: false }, ParseUUIDPipe)
+    id: string,
+    @CurrentUser()
+    currentUser: UserEntity,
+  ) {
+    return this.service.deleteOne(id, currentUser)
+  }
+
+  /**
+   * Mutation responsible for disabling some entity.
+   *
+   * @param id defines the entity unique identifier.
+   * @param currentUser defines an object that represenst the user that is
+   * requesting this action.
+   * @returns an object that represents the created entity.
+   */
+  @UseGuards(JwtGuard)
+  @Mutation(() => UserEntity, {
+    name: 'disableUser',
+    description: 'Mutation responsible for disabling some entity data',
+  })
+  disableOne(
+    @Args('id', { nullable: false }, ParseUUIDPipe)
+    id: string,
+    @CurrentUser()
+    currentUser: UserEntity,
+  ) {
+    return this.disableOne(id, currentUser)
+  }
+
+  /**
+   * Mutation responsible for enabling some entity.
+   *
+   * @param id defines the entity unique identifier.
+   * @param currentUser defines an object that represenst the user that is
+   * requesting this action.
+   * @returns an object that represents the created entity.
+   */
+  @Protect(RoleEnum.admin)
+  @Mutation(() => UserEntity, {
+    name: 'enableUser',
+    description: 'Mutation responsible for enabling some entity data',
+  })
+  enableOne(
+    @Args('id', { nullable: false }, ParseUUIDPipe)
+    id: string,
+    @CurrentUser()
+    currentUser: UserEntity,
+  ) {
+    return this.enableOne(id, currentUser)
   }
 }
