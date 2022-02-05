@@ -12,6 +12,7 @@ import { ImageModule } from './image/image.module'
 import { ItemModule } from './item/item.module'
 import { PasswordModule } from './password/password.module'
 import { PermissionModule } from './permission/permission.module'
+import { PointModule } from './point/point.module'
 import { UserModule } from './user/user.module'
 
 @Module({
@@ -22,6 +23,7 @@ import { UserModule } from './user/user.module'
     UserModule,
     ItemModule,
     ImageModule,
+    PointModule,
     EnvModule.forRoot({
       envFilePath: ['.env'],
     }),
