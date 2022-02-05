@@ -72,6 +72,14 @@ export interface StringFieldComparison {
     notLike?: Nullable<string>;
 }
 
+export interface UpdateItemInput {
+    name?: Nullable<string>;
+}
+
+export interface UpdateUserInput {
+    name?: Nullable<string>;
+}
+
 export interface BaseEntity {
     createdAt: DateTime;
     deletedAt?: Nullable<DateTime>;
@@ -100,7 +108,15 @@ export interface ItemEntityEdge {
 export interface IMutation {
     createItem(input: CreateItemInput): ItemEntity | Promise<ItemEntity>;
     createUser(input: CreateUserInput): UserEntity | Promise<UserEntity>;
+    deleteItem(id: string): ItemEntity | Promise<ItemEntity>;
+    deleteUser(id: string): UserEntity | Promise<UserEntity>;
+    disableItem(id: string): ItemEntity | Promise<ItemEntity>;
+    disableUser(id: string): UserEntity | Promise<UserEntity>;
+    enableItem(id: string): ItemEntity | Promise<ItemEntity>;
+    enableUser(id: string): UserEntity | Promise<UserEntity>;
     login(input: LoginInput): TokenModel | Promise<TokenModel>;
+    updateItem(id: string, input: UpdateItemInput): ItemEntity | Promise<ItemEntity>;
+    updateUser(id: string, input: UpdateUserInput): UserEntity | Promise<UserEntity>;
 }
 
 export interface PageInfo {

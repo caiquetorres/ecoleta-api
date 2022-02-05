@@ -142,8 +142,40 @@ type Mutation {
   """Mutation responsible for creating a new entity"""
   createUser(input: CreateUserInput!): UserEntity!
 
+  """
+  Mutation responsible for deleting some entity based on the `id` parameter.
+  """
+  deleteItem(id: String!): ItemEntity!
+
+  """Mutation responsible for deleting some entity data"""
+  deleteUser(id: String!): UserEntity!
+
+  """
+  Mutation responsible for disabling some entity based on the `id` parameter.
+  """
+  disableItem(id: String!): ItemEntity!
+
+  """Mutation responsible for disabling some entity data"""
+  disableUser(id: String!): UserEntity!
+
+  """
+  Mutation responsible for enabling some entity based on the `id` parameter.
+  """
+  enableItem(id: String!): ItemEntity!
+
+  """Mutation responsible for enabling some entity data"""
+  enableUser(id: String!): UserEntity!
+
   """Mutation responsible for validating the username and password."""
   login(input: LoginInput!): TokenModel!
+
+  """
+  responsible for updating some entity based on the sent `input` parameter.
+  """
+  updateItem(id: String!, input: UpdateItemInput!): ItemEntity!
+
+  """Mutation responsible for updating some entity data"""
+  updateUser(id: String!, input: UpdateUserInput!): UserEntity!
 }
 
 type PageInfo {
@@ -163,6 +195,10 @@ type PageInfo {
 type Query {
   """Query responsible for finding one entity based on the id parameter."""
   item(id: String!): ItemEntity!
+
+  """
+  Query responsible for finding several entities based on the input data.
+  """
   items(
     """Specify to filter the records returned."""
     filter: ItemEntityFilter = {}
@@ -219,6 +255,20 @@ type TokenModel {
 
   """Property that defines a `string` object, that represents the token"""
   token: String!
+}
+
+"""Input that handles all the data needed to update a new `item` entity."""
+input UpdateItemInput {
+  """Property that defines a `string` object that represents the item name."""
+  name: String
+}
+
+"""Input that handles all the data needed to update some `user` entity."""
+input UpdateUserInput {
+  """
+  Property that defines a `string` object, that represents the user name.
+  """
+  name: String
 }
 
 """Entity that represents the project `user` entity."""
