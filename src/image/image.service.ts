@@ -8,7 +8,7 @@ import { CreateImageInput } from './dtos/create-image.input'
 import { QueryImagesArgs } from './dtos/query-image.args'
 import { UpdateImageInput } from './dtos/update-image.input'
 
-import { TypeOrmQueryService } from '../common/services/typeorm-query.service'
+import { TypeOrmQueryService } from '../common/services/type-orm-query.service'
 
 /**
  * Service that deals with all the business logic related with the
@@ -23,9 +23,14 @@ export class ImageService extends TypeOrmQueryService<ImageEntity> {
     super(repository)
   }
 
+  /**
+   * Method responsible for creating a new entity.
+   *
+   * @param input defines an object that contains all the entity data.
+   * @returns an object that represents the created entity.
+   */
   createOne(input: CreateImageInput) {
-    const image = new ImageEntity(input)
-    return this.repository.save(image)
+    return this.repository.save(new ImageEntity(input))
   }
 
   /**
@@ -101,8 +106,7 @@ export class ImageService extends TypeOrmQueryService<ImageEntity> {
       )
     }
 
-    await this.repository.delete(id)
-    return image
+    return this.repository.remove(image)
   }
 
   /**
@@ -121,8 +125,7 @@ export class ImageService extends TypeOrmQueryService<ImageEntity> {
       )
     }
 
-    await this.repository.softDelete(id)
-    return this.repository.findOne(id, { withDeleted: true })
+    return this.repository.softRemove(image)
   }
 
   /**
@@ -140,7 +143,6 @@ export class ImageService extends TypeOrmQueryService<ImageEntity> {
       )
     }
 
-    await this.repository.restore(id)
-    return this.repository.findOne(id)
+    return this.repository.recover(image)
   }
 }

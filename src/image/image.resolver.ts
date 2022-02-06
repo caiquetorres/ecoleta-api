@@ -31,7 +31,6 @@ export class ImageResolver {
   @Protect(RoleEnum.admin)
   @Mutation(() => ImageEntity, {
     name: 'createImage',
-    description: 'Mutation responsible for creating a new entity.',
   })
   createOne(
     @Args('input', { type: () => CreateImageInput })
@@ -50,8 +49,6 @@ export class ImageResolver {
   @Protect(RoleEnum.admin)
   @Query(() => ImageEntity, {
     name: 'image',
-    description:
-      'Query responsible for finding one entity based on the id parameter.',
   })
   getOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
@@ -71,8 +68,6 @@ export class ImageResolver {
   @Protect(RoleEnum.admin)
   @Query(() => QueryImagesArgs.ConnectionType, {
     name: 'images',
-    description:
-      'Query responsible for finding several entities based on the input data.',
   })
   getMany(
     @Args()
@@ -93,8 +88,6 @@ export class ImageResolver {
   @Protect(RoleEnum.admin)
   @Mutation(() => ImageEntity, {
     name: 'updateImage',
-    description:
-      'responsible for updating some entity based on the sent `input` parameter.',
   })
   updateOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
@@ -106,8 +99,8 @@ export class ImageResolver {
   }
 
   /**
-   * Mutation responsible for deleting some entity based on the sent `id`
-   * parameter.
+   * Mutation responsible for deleting some entity based on the sent
+   * `id` parameter.
    *
    * @param id defines the entity unique identifier.
    * @returns an object that represents the disabled entity.
@@ -115,8 +108,6 @@ export class ImageResolver {
   @Protect(RoleEnum.admin)
   @Mutation(() => ImageEntity, {
     name: 'deleteImage',
-    description:
-      'Mutation responsible for deleting some entity based on the `id` parameter.',
   })
   deleteOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
@@ -126,8 +117,8 @@ export class ImageResolver {
   }
 
   /**
-   * Mutation responsible for disabling some entity based on the sent `id`
-   * parameter.
+   * Mutation responsible for disabling some entity based on the sent
+   * `id` parameter.
    *
    * @param id defines the entity unique identifier.
    * @returns an object that represents the disabled entity.
@@ -135,8 +126,6 @@ export class ImageResolver {
   @Protect(RoleEnum.admin)
   @Mutation(() => ImageEntity, {
     name: 'disableImage',
-    description:
-      'Mutation responsible for disabling some entity based on the `id` parameter.',
   })
   disableOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
@@ -155,8 +144,6 @@ export class ImageResolver {
   @Protect(RoleEnum.admin)
   @Mutation(() => ImageEntity, {
     name: 'enableImage',
-    description:
-      'Mutation responsible for enabling some entity based on the `id` parameter.',
   })
   enableOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
