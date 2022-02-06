@@ -1,14 +1,31 @@
-import { InputType, OmitType, PartialType } from '@nestjs/graphql'
+import { Field, InputType } from '@nestjs/graphql'
 
-import { CreateUserInput } from './create-user.input'
+import { IUser } from '../user.interface'
+import { IsEmail, IsOptional, IsString } from 'class-validator'
 
 /**
  * Input that handles all the data needed to update some `user` entity.
  */
-@InputType({
-  description:
-    'Input that handles all the data needed to update some `user` entity.',
-})
-export class UpdateUserInput extends PartialType(
-  OmitType(CreateUserInput, ['email', 'password'] as const),
-) {}
+@InputType()
+export class UpdateUserInput implements Omit<IUser, 'password' | 'roles'> {
+  //#region Public properties
+
+  /**
+   * @inheritdoc
+   */
+  @Field({ nullable: false })
+  @IsOptional()
+  @IsString({ message: 'It is required to send a valid string' })
+  name: string
+
+  /**
+   * @inheritdoc
+   */
+  @Field({ nullable: false })
+  @IsOptional()
+  @IsString({ message: 'It is required to send a valid string' })
+  @IsEmail({}, { message: 'It is required to send a valid e-mail' })
+  email: string
+
+  //#endregion
+}
