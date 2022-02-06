@@ -32,9 +32,8 @@ input CreateImageInput {
   url: String!
 }
 
-"""Input that handles all the data needed to create a new `item` entity."""
 input CreateItemInput {
-  """Property that defines a `string` object that represents the item name."""
+  image: CreateImageInput
   name: String!
 }
 
@@ -148,8 +147,8 @@ type ItemEntity implements BaseEntity {
   Property that defines an `uuid` string type, that represents the entity unique identifier.
   """
   id: ID!
-
-  """Property that defines a `string` object that represents the item name."""
+  image: ImageEntity!
+  imageId: String
   name: String!
 
   """
@@ -176,6 +175,7 @@ type ItemEntityEdge {
 
 input ItemEntityFilter {
   and: [ItemEntityFilter!]
+  imageId: StringFieldComparison
   name: StringFieldComparison
   or: [ItemEntityFilter!]
 }
@@ -187,6 +187,7 @@ input ItemEntitySort {
 }
 
 enum ItemEntitySortFields {
+  imageId
   name
 }
 
@@ -199,49 +200,22 @@ input LoginInput {
 }
 
 type Mutation {
-  """Mutation responsible for creating a new entity."""
   createImage(input: CreateImageInput!): ImageEntity!
-
-  """Mutation responsible for creating a new entity."""
   createItem(input: CreateItemInput!): ItemEntity!
 
   """Mutation responsible for creating a new entity"""
   createUser(input: CreateUserInput!): UserEntity!
-
-  """
-  Mutation responsible for deleting some entity based on the `id` parameter.
-  """
   deleteImage(id: String!): ImageEntity!
-
-  """
-  Mutation responsible for deleting some entity based on the `id` parameter.
-  """
   deleteItem(id: String!): ItemEntity!
 
   """Mutation responsible for deleting some entity data"""
   deleteUser(id: String!): UserEntity!
-
-  """
-  Mutation responsible for disabling some entity based on the `id` parameter.
-  """
   disableImage(id: String!): ImageEntity!
-
-  """
-  Mutation responsible for disabling some entity based on the `id` parameter.
-  """
   disableItem(id: String!): ItemEntity!
 
   """Mutation responsible for disabling some entity data"""
   disableUser(id: String!): UserEntity!
-
-  """
-  Mutation responsible for enabling some entity based on the `id` parameter.
-  """
   enableImage(id: String!): ImageEntity!
-
-  """
-  Mutation responsible for enabling some entity based on the `id` parameter.
-  """
   enableItem(id: String!): ItemEntity!
 
   """Mutation responsible for enabling some entity data"""
@@ -249,15 +223,7 @@ type Mutation {
 
   """Mutation responsible for validating the username and password."""
   login(input: LoginInput!): TokenModel!
-
-  """
-  responsible for updating some entity based on the sent `input` parameter.
-  """
   updateImage(id: String!, input: UpdateImageInput!): ImageEntity!
-
-  """
-  responsible for updating some entity based on the sent `input` parameter.
-  """
   updateItem(id: String!, input: UpdateItemInput!): ItemEntity!
 
   """Mutation responsible for updating some entity data"""
@@ -279,12 +245,7 @@ type PageInfo {
 }
 
 type Query {
-  """Query responsible for finding one entity based on the id parameter."""
   image(id: String!): ImageEntity!
-
-  """
-  Query responsible for finding several entities based on the input data.
-  """
   images(
     """Specify to filter the records returned."""
     filter: ImageEntityFilter = {}
@@ -295,13 +256,7 @@ type Query {
     """Specify to sort results."""
     sorting: [ImageEntitySort!] = []
   ): ImageEntityConnection!
-
-  """Query responsible for finding one entity based on the id parameter."""
   item(id: String!): ItemEntity!
-
-  """
-  Query responsible for finding several entities based on the input data.
-  """
   items(
     """Specify to filter the records returned."""
     filter: ItemEntityFilter = {}
@@ -360,16 +315,14 @@ type TokenModel {
   token: String!
 }
 
-"""Input that handles all the data needed to update some `image` entity."""
 input UpdateImageInput {
   title: String
   url: String!
 }
 
-"""Input that handles all the data needed to update a new `item` entity."""
 input UpdateItemInput {
-  """Property that defines a `string` object that represents the item name."""
-  name: String
+  image: UpdateImageInput!
+  name: String!
 }
 
 """Input that handles all the data needed to update some `user` entity."""
