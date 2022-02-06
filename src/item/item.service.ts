@@ -12,7 +12,7 @@ import { CreateItemInput } from './dtos/create-item.input'
 import { QueryItemsArgs } from './dtos/query-items.args'
 import { UpdateItemInput } from './dtos/update-item.input'
 
-import { TypeOrmQueryService } from '../common/services/typeorm-query.service'
+import { TypeOrmQueryService } from '../common/services/type-orm-query.service'
 
 /**
  * Service that deals with all the business logic related with the
@@ -109,7 +109,9 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
    * @returns an object that represents the deleted entity.
    */
   async deleteOne(id: string) {
-    const item = await this.repository.findOne(id)
+    const item = await this.repository.findOne(id, {
+      relations: ['image'],
+    })
 
     if (!item) {
       throw new NotFoundException(
@@ -117,8 +119,7 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
       )
     }
 
-    await this.repository.delete(id)
-    return item
+    return await this.repository.remove(item)
   }
 
   /**
@@ -129,7 +130,9 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
    * @returns an object that represents the disabled entity.
    */
   async disableOne(id: string) {
-    const item = await this.repository.findOne(id)
+    const item = await this.repository.findOne(id, {
+      relations: ['image'],
+    })
 
     if (!item) {
       throw new NotFoundException(
@@ -137,8 +140,7 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
       )
     }
 
-    await this.repository.softDelete(id)
-    return this.repository.findOne(id, { withDeleted: true })
+    return this.repository.softRemove(item)
   }
 
   /**
@@ -148,7 +150,10 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
    * @returns an object that represents the enabled entity.
    */
   async enableOne(id: string) {
-    const item = await this.repository.findOne(id, { withDeleted: true })
+    const item = await this.repository.findOne(id, {
+      withDeleted: true,
+      relations: ['image'],
+    })
 
     if (!item) {
       throw new NotFoundException(
@@ -156,7 +161,6 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
       )
     }
 
-    await this.repository.restore(id)
-    return this.repository.findOne(id)
+    return this.repository.recover(item)
   }
 }

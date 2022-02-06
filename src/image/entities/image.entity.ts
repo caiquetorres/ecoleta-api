@@ -19,9 +19,7 @@ export class ImageEntity extends BaseEntity implements IImage {
   /**
    * @inheritdoc
    */
-  @FilterableField({
-    nullable: false,
-  })
+  @FilterableField({ nullable: false })
   @Column({
     type: 'text',
     nullable: false,
@@ -31,12 +29,10 @@ export class ImageEntity extends BaseEntity implements IImage {
   /**
    * @inheritdoc
    */
-  @FilterableField({
-    nullable: true,
-  })
+  @FilterableField({ nullable: true })
   @Column({
     type: 'varchar',
-    length: '128',
+    length: 128,
     nullable: true,
   })
   title: string

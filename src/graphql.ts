@@ -13,6 +13,7 @@ export enum ImageEntitySortFields {
 }
 
 export enum ItemEntitySortFields {
+    imageId = "imageId",
     name = "name"
 }
 
@@ -32,6 +33,7 @@ export interface CreateImageInput {
 }
 
 export interface CreateItemInput {
+    image?: Nullable<CreateImageInput>;
     name: string;
 }
 
@@ -63,6 +65,7 @@ export interface ImageEntitySort {
 
 export interface ItemEntityFilter {
     and?: Nullable<ItemEntityFilter[]>;
+    imageId?: Nullable<StringFieldComparison>;
     name?: Nullable<StringFieldComparison>;
     or?: Nullable<ItemEntityFilter[]>;
 }
@@ -101,7 +104,8 @@ export interface UpdateImageInput {
 }
 
 export interface UpdateItemInput {
-    name?: Nullable<string>;
+    image: UpdateImageInput;
+    name: string;
 }
 
 export interface UpdateUserInput {
@@ -138,6 +142,8 @@ export interface ItemEntity extends BaseEntity {
     createdAt: DateTime;
     deletedAt?: Nullable<DateTime>;
     id: string;
+    image: ImageEntity;
+    imageId?: Nullable<string>;
     name: string;
     updatedAt: DateTime;
 }

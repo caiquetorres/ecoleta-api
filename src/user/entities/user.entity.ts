@@ -5,6 +5,8 @@ import { BaseEntity } from '../../common/entities/base.entity'
 
 import { RoleEnum } from '../../common/models/role.enum'
 
+import { IUser } from '../user.interface'
+
 /**
  * Entity that represents the `user` entity.
  */
@@ -13,18 +15,13 @@ import { RoleEnum } from '../../common/models/role.enum'
   implements: () => [BaseEntity],
   description: 'Entity that represents the project `user` entity.',
 })
-export class UserEntity extends BaseEntity {
+export class UserEntity extends BaseEntity implements IUser {
   //#region Public properties
 
   /**
-   * Property that defines a `string` object, that represents the user
-   * name.
+   * @inheritdoc
    */
-  @Field({
-    nullable: false,
-    description:
-      'Property that defines a `string` object, that represents the user name.',
-  })
+  @Field({ nullable: false })
   @Column({
     type: 'varchar',
     nullable: false,
@@ -33,16 +30,9 @@ export class UserEntity extends BaseEntity {
   name: string
 
   /**
-   * Property that defines a `string` object, that represents the user
-   * email value.
-   *
-   * It must be unique.
+   * @inheritdoc
    */
-  @Field({
-    nullable: false,
-    description:
-      'Property that defines a `string` object, that represents the user email.',
-  })
+  @Field({ nullable: false })
   @Column({
     type: 'varchar',
     nullable: false,
@@ -52,8 +42,7 @@ export class UserEntity extends BaseEntity {
   email: string
 
   /**
-   * Property that defines a `string` object, that represents the user
-   * password.
+   * @inheritdoc
    */
   @Column({
     type: 'varchar',
@@ -63,12 +52,9 @@ export class UserEntity extends BaseEntity {
   password: string
 
   /**
-   * Property that defines an array with all the user roles.
+   * @inheritdoc
    */
-  @Field(() => [String], {
-    nullable: false,
-    description: 'Property that defines an array with all the user roles.',
-  })
+  @Field(() => [String], { nullable: false })
   @Column({
     type: 'varchar',
     array: true,

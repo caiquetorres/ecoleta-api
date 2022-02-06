@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql'
 
 import { IImage } from '../image.interface'
-import { IsDefined, IsString, IsUrl } from 'class-validator'
+import { IsDefined, IsOptional, IsString, IsUrl } from 'class-validator'
 
 /**
  * Input that handles all the data needed to create a new `image`
@@ -9,14 +9,12 @@ import { IsDefined, IsString, IsUrl } from 'class-validator'
  */
 @InputType()
 export class CreateImageInput implements IImage {
+  //#region Public properties
+
   /**
-   * Test
-   *
    * @inheritdoc
    */
-  @Field({
-    nullable: false,
-  })
+  @Field({ nullable: false })
   @IsDefined({ message: 'It is required to send the url' })
   @IsUrl({}, { message: 'It is required to send a valid url' })
   @IsString({ message: 'It is required to send a valid string' })
@@ -25,10 +23,10 @@ export class CreateImageInput implements IImage {
   /**
    * @inheritdoc
    */
-  @Field({
-    nullable: true,
-  })
-  @IsDefined({ message: 'It is required to send the title' })
+  @Field({ nullable: true })
+  @IsOptional()
   @IsString({ message: 'It is required to send a valid string' })
   title: string
+
+  //#endregion
 }

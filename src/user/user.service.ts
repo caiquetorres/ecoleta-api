@@ -13,7 +13,7 @@ import { RoleEnum } from '../common/models/role.enum'
 import { CreateUserInput } from './dtos/create-user.input'
 import { UpdateUserInput } from './dtos/update-user.input'
 
-import { TypeOrmQueryService } from '../common/services/typeorm-query.service'
+import { TypeOrmQueryService } from '../common/services/type-orm-query.service'
 import { PasswordService } from '../password/password.service'
 import { PermissionService } from '../permission/permission.service'
 
