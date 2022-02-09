@@ -16,7 +16,9 @@ import {
  * Input that handles all the data needed to create a new `point` entity.
  */
 @InputType()
-export class CreatePointInput implements Omit<IPoint, 'imageId' | 'addressId'> {
+export class CreatePointInput
+  implements Omit<IPoint, 'imageId' | 'addressId' | 'address'>
+{
   //#region Public properties
 
   /**
