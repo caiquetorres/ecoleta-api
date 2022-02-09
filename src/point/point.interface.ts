@@ -29,6 +29,18 @@ export interface IPoint {
   email: string
 
   /**
+   * Property that defines a `string` that represents the related
+   * `image` entity id.
+   */
+  imageId: string
+
+  /**
+   * Property that defines a `string` that represents the related
+   * `address` entity id.
+   */
+  addressId: string
+
+  /**
    * Property that defines an object that contains all the related
    * image entity.
    */
@@ -39,17 +51,4 @@ export interface IPoint {
    * address entity.
    */
   address: IAddress
-
-  /**
-   * Property that defines a `string` that represents the related
-   * `image` entity id.
-   */
-  imageId: string
-
-  /**
-   * Property that defines a `string` that represents the related
-   * `address` entity id.
-   */
-
-  addressId: string
 }
