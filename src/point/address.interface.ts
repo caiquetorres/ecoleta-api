@@ -1,3 +1,5 @@
+import { IPoint } from './point.interface'
+
 /**
  * Interface that handles all the `address` entity properties.
  */
@@ -31,4 +33,16 @@ export interface IAddress {
    * country.
    */
   country: string
+
+  /**
+   * Property that defines a `string` that represents the related
+   * `point` entity id.
+   */
+  pointId: string
+
+  /**
+   * Property that defines an `object` that contains all the data
+   * related with the `address` point.
+   */
+  point: IPoint
 }

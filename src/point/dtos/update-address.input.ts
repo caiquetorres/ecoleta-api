@@ -1,12 +1,14 @@
-import { Field } from '@nestjs/graphql'
+import { Field, InputType } from '@nestjs/graphql'
 
 import { IAddress } from '../address.interface'
 import { IsOptional, IsString } from 'class-validator'
 
 /**
- * Input that handles all the data needed to update som `address` entity.
+ * Input that handles all the data needed to update som `address`
+ * entity.
  */
-export class UpdateAddressInput implements IAddress {
+@InputType()
+export class UpdateAddressInput implements Omit<IAddress, 'pointId' | 'point'> {
   //#region Public properties
 
   /**

@@ -4,10 +4,11 @@ import { IAddress } from '../address.interface'
 import { IsDefined, IsString } from 'class-validator'
 
 /**
- * Input that handles all the data needed to create a new `address` entity.
+ * Input that handles all the data needed to create a new `address`
+ * entity.
  */
 @InputType()
-export class CreateAddressInput implements IAddress {
+export class CreateAddressInput implements Omit<IAddress, 'pointId' | 'point'> {
   //#region Public properties
 
   /**
