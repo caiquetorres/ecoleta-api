@@ -21,7 +21,6 @@ type AddressEntity implements BaseEntity {
   Property that defines an `uuid` string type, that represents the entity unique identifier.
   """
   id: ID!
-  pointId: String
   state: String!
   street: String!
 

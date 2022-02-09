@@ -187,7 +187,6 @@ export interface AddressEntity extends BaseEntity {
     deletedAt?: Nullable<DateTime>;
     district: string;
     id: string;
-    pointId?: Nullable<string>;
     state: string;
     street: string;
     updatedAt: DateTime;
