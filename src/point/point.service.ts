@@ -58,17 +58,6 @@ export class PointService extends TypeOrmQueryService<PointEntity> {
   }
 
   /**
-   * Method responsible for finding one entity based on the `id`
-   * parameter.
-   *
-   * @param id defines the entity unique identifier.
-   * @returns an object that represents the found entity.
-   */
-  getAddressById(id: string) {
-    return this.addressRepository.findOne(id)
-  }
-
-  /**
    * Method responsible for finding several entities based on the
    * `query` parameter.
    *

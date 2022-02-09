@@ -20,6 +20,7 @@ import { QueryPointsArgs } from './dtos/query-points.args'
 import { UpdatePointInput } from './dtos/update-point.input'
 
 import { ImageService } from '../image/image.service'
+import { AddressService } from './address.service'
 import { PointService } from './point.service'
 
 import { IPoint } from './point.interface'
@@ -34,6 +35,7 @@ import { IPoint } from './point.interface'
 export class PointResolver {
   constructor(
     private readonly pointService: PointService,
+    private readonly addressService: AddressService,
     private readonly imageService: ImageService,
   ) {}
 
@@ -75,22 +77,6 @@ export class PointResolver {
   }
 
   /**
-   * Nested query responsible for finding the related `image` entity.
-   *
-   * @param item defines the parent entity.
-   * @returns an object that represents the found entity.
-   */
-  @ResolveField(() => ImageEntity, {
-    name: 'image',
-  })
-  getImageByPointId(
-    @Parent()
-    point: IPoint,
-  ) {
-    return this.imageService.getOne(point.imageId)
-  }
-
-  /**
    * Nested query responsible for finding the related `address`
    * entity.
    *
@@ -104,7 +90,23 @@ export class PointResolver {
     @Parent()
     point: IPoint,
   ) {
-    return this.pointService.getAddressById(point.addressId)
+    return this.addressService.getOne(point.addressId)
+  }
+
+  /**
+   * Nested query responsible for finding the related `image` entity.
+   *
+   * @param item defines the parent entity.
+   * @returns an object that represents the found entity.
+   */
+  @ResolveField(() => ImageEntity, {
+    name: 'image',
+  })
+  getImageByPointId(
+    @Parent()
+    point: IPoint,
+  ) {
+    return this.imageService.getOne(point.imageId)
   }
 
   /**
