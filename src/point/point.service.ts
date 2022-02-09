@@ -2,21 +2,26 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
+import { AddressEntity } from './entities/address.entity'
 import { PointEntity } from './entities/point.entity'
 
 import { CreatePointInput } from './dtos/create-point.input'
+import { QueryPointsArgs } from './dtos/query-points.args'
 import { UpdatePointInput } from './dtos/update-point.input'
 
 import { TypeOrmQueryService } from '../common/services/type-orm-query.service'
 
 /**
- * Service that deals with all the business logic related with the `point` entity.
+ * Service that deals with all the business logic related with the
+ * `point` entity.
  */
 @Injectable()
 export class PointService extends TypeOrmQueryService<PointEntity> {
   constructor(
     @InjectRepository(PointEntity)
     repository: Repository<PointEntity>,
+    @InjectRepository(AddressEntity)
+    private readonly addressRepository: Repository<AddressEntity>,
   ) {
     super(repository)
   }
@@ -24,7 +29,8 @@ export class PointService extends TypeOrmQueryService<PointEntity> {
   /**
    * Method responsible for creating a new entity.
    *
-   * @param input defines an object that contains all the entity data.
+   * @param input defines an object that contains all the entity
+   * data.
    * @returns an object that represents the created entity.
    */
   async createOne(input: CreatePointInput) {
@@ -33,7 +39,8 @@ export class PointService extends TypeOrmQueryService<PointEntity> {
   }
 
   /**
-   * Method responsible for finding one entity based on the `id` parameter.
+   * Method responsible for finding one entity based on the `id`
+   * parameter.
    *
    * @param id defines the entity unique identifier.
    * @returns an object that represents the found entity.
@@ -51,14 +58,44 @@ export class PointService extends TypeOrmQueryService<PointEntity> {
   }
 
   /**
-   * Method responsible for updating some entity based on the sent `input` parameter.
+   * Method responsible for finding one entity based on the `id`
+   * parameter.
    *
    * @param id defines the entity unique identifier.
-   * @param input defines an object that represents the entity new data.
+   * @returns an object that represents the found entity.
+   */
+  getAddressById(id: string) {
+    return this.addressRepository.findOne(id)
+  }
+
+  /**
+   * Method responsible for finding several entities based on the
+   * `query` parameter.
+   *
+   * @param query defines an object that contains the data needed for
+   * filtering, sorting and paginating the found entity.
+   * @returns an object that contains all the found data.
+   */
+  getMany(query: QueryPointsArgs) {
+    return QueryPointsArgs.ConnectionType.createFromPromise(
+      (query) => this.query(query),
+      query,
+    )
+  }
+
+  /**
+   * Method responsible for updating some entity based on the sent
+   * `input` parameter.
+   *
+   * @param id defines the entity unique identifier.
+   * @param input defines an object that represents the entity new
+   * data.
    * @returns an object that represents the updated entity.
    */
   async updateOne(id: string, input: UpdatePointInput) {
-    const point = await this.repository.findOne(id)
+    const point = await this.repository.findOne(id, {
+      relations: ['image', 'address'],
+    })
 
     if (!point) {
       throw new NotFoundException(
@@ -66,9 +103,21 @@ export class PointService extends TypeOrmQueryService<PointEntity> {
       )
     }
 
+    const { image, address, ...rest } = input
+
+    point.image = {
+      ...point.image,
+      ...image,
+    }
+
+    point.address = {
+      ...point.address,
+      ...address,
+    }
+
     return this.repository.save({
       ...point,
-      ...input,
+      ...rest,
     })
   }
 
@@ -80,7 +129,7 @@ export class PointService extends TypeOrmQueryService<PointEntity> {
    */
   async deleteOne(id: string) {
     const point = await this.repository.findOne(id, {
-      relations: ['image'],
+      relations: ['image', 'address'],
     })
 
     if (!point) {
@@ -101,7 +150,7 @@ export class PointService extends TypeOrmQueryService<PointEntity> {
    */
   async disableOne(id: string) {
     const point = await this.repository.findOne(id, {
-      relations: ['image'],
+      relations: ['image', 'address'],
     })
 
     if (!point) {
@@ -122,7 +171,7 @@ export class PointService extends TypeOrmQueryService<PointEntity> {
   async enableOne(id: string) {
     const point = await this.repository.findOne(id, {
       withDeleted: true,
-      relations: ['image'],
+      relations: ['image', 'address'],
     })
 
     if (!point) {
