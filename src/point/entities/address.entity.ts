@@ -1,16 +1,8 @@
 import { FilterableField } from '@nestjs-query/query-graphql'
 import { ObjectType } from '@nestjs/graphql'
-import {
-  Column,
-  DeepPartial,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  RelationId,
-} from 'typeorm'
+import { Column, DeepPartial, Entity } from 'typeorm'
 
 import { BaseEntity } from '../../common/entities/base.entity'
-import { PointEntity } from './point.entity'
 
 import { IAddress } from '../address.interface'
 
@@ -78,24 +70,6 @@ export class AddressEntity extends BaseEntity implements IAddress {
     nullable: false,
   })
   country: string
-
-  /**
-   * @inheritdoc
-   */
-  @FilterableField({ nullable: true })
-  @RelationId((address: AddressEntity) => address.point)
-  pointId: string
-
-  //#region Relations
-
-  /**
-   * @inheritdoc
-   */
-  @JoinColumn()
-  @OneToOne(() => PointEntity)
-  point: PointEntity
-
-  //#endregion
 
   //#endregion
 

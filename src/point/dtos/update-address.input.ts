@@ -8,7 +8,7 @@ import { IsOptional, IsString } from 'class-validator'
  * entity.
  */
 @InputType()
-export class UpdateAddressInput implements Omit<IAddress, 'pointId' | 'point'> {
+export class UpdateAddressInput implements IAddress {
   //#region Public properties
 
   /**
