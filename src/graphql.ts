@@ -17,6 +17,15 @@ export enum ItemEntitySortFields {
     name = "name"
 }
 
+export enum PointEntitySortFields {
+    addressId = "addressId",
+    description = "description",
+    email = "email",
+    imageId = "imageId",
+    name = "name",
+    whatsapp = "whatsapp"
+}
+
 export enum SortDirection {
     ASC = "ASC",
     DESC = "DESC"
@@ -27,6 +36,14 @@ export enum SortNulls {
     NULLS_LAST = "NULLS_LAST"
 }
 
+export interface CreateAddressInput {
+    city: string;
+    country: string;
+    district: string;
+    state: string;
+    street: string;
+}
+
 export interface CreateImageInput {
     title?: Nullable<string>;
     url: string;
@@ -35,6 +52,15 @@ export interface CreateImageInput {
 export interface CreateItemInput {
     image?: Nullable<CreateImageInput>;
     name: string;
+}
+
+export interface CreatePointInput {
+    address: CreateAddressInput;
+    description: string;
+    email: string;
+    image: CreateImageInput;
+    name: string;
+    whatsapp: string;
 }
 
 export interface CreateUserInput {
@@ -81,6 +107,23 @@ export interface LoginInput {
     username: string;
 }
 
+export interface PointEntityFilter {
+    addressId?: Nullable<StringFieldComparison>;
+    and?: Nullable<PointEntityFilter[]>;
+    description?: Nullable<StringFieldComparison>;
+    email?: Nullable<StringFieldComparison>;
+    imageId?: Nullable<StringFieldComparison>;
+    name?: Nullable<StringFieldComparison>;
+    or?: Nullable<PointEntityFilter[]>;
+    whatsapp?: Nullable<StringFieldComparison>;
+}
+
+export interface PointEntitySort {
+    direction: SortDirection;
+    field: PointEntitySortFields;
+    nulls?: Nullable<SortNulls>;
+}
+
 export interface StringFieldComparison {
     eq?: Nullable<string>;
     gt?: Nullable<string>;
@@ -98,6 +141,14 @@ export interface StringFieldComparison {
     notLike?: Nullable<string>;
 }
 
+export interface UpdateAddressInput {
+    city: string;
+    country: string;
+    district: string;
+    state: string;
+    street: string;
+}
+
 export interface UpdateImageInput {
     title?: Nullable<string>;
     url: string;
@@ -108,14 +159,37 @@ export interface UpdateItemInput {
     name: string;
 }
 
-export interface UpdateUserInput {
+export interface UpdatePointInput {
+    address?: Nullable<UpdateAddressInput>;
+    description?: Nullable<string>;
+    email?: Nullable<string>;
+    image?: Nullable<UpdateImageInput>;
     name?: Nullable<string>;
+    whatsapp?: Nullable<string>;
+}
+
+export interface UpdateUserInput {
+    email: string;
+    name: string;
 }
 
 export interface BaseEntity {
     createdAt: DateTime;
     deletedAt?: Nullable<DateTime>;
     id: string;
+    updatedAt: DateTime;
+}
+
+export interface AddressEntity extends BaseEntity {
+    city: string;
+    country: string;
+    createdAt: DateTime;
+    deletedAt?: Nullable<DateTime>;
+    district: string;
+    id: string;
+    pointId?: Nullable<string>;
+    state: string;
+    street: string;
     updatedAt: DateTime;
 }
 
@@ -161,19 +235,24 @@ export interface ItemEntityEdge {
 export interface IMutation {
     createImage(input: CreateImageInput): ImageEntity | Promise<ImageEntity>;
     createItem(input: CreateItemInput): ItemEntity | Promise<ItemEntity>;
+    createPoint(input: CreatePointInput): PointEntity | Promise<PointEntity>;
     createUser(input: CreateUserInput): UserEntity | Promise<UserEntity>;
     deleteImage(id: string): ImageEntity | Promise<ImageEntity>;
     deleteItem(id: string): ItemEntity | Promise<ItemEntity>;
+    deletePoint(id: string): PointEntity | Promise<PointEntity>;
     deleteUser(id: string): UserEntity | Promise<UserEntity>;
     disableImage(id: string): ImageEntity | Promise<ImageEntity>;
     disableItem(id: string): ItemEntity | Promise<ItemEntity>;
+    disablePoint(id: string): PointEntity | Promise<PointEntity>;
     disableUser(id: string): UserEntity | Promise<UserEntity>;
     enableImage(id: string): ImageEntity | Promise<ImageEntity>;
     enableItem(id: string): ItemEntity | Promise<ItemEntity>;
+    enablePoint(id: string): PointEntity | Promise<PointEntity>;
     enableUser(id: string): UserEntity | Promise<UserEntity>;
     login(input: LoginInput): TokenModel | Promise<TokenModel>;
     updateImage(id: string, input: UpdateImageInput): ImageEntity | Promise<ImageEntity>;
     updateItem(id: string, input: UpdateItemInput): ItemEntity | Promise<ItemEntity>;
+    updatePoint(id: string, input: UpdatePointInput): PointEntity | Promise<PointEntity>;
     updateUser(id: string, input: UpdateUserInput): UserEntity | Promise<UserEntity>;
 }
 
@@ -184,6 +263,31 @@ export interface PageInfo {
     startCursor?: Nullable<ConnectionCursor>;
 }
 
+export interface PointEntity extends BaseEntity {
+    address: AddressEntity;
+    addressId?: Nullable<string>;
+    createdAt: DateTime;
+    deletedAt?: Nullable<DateTime>;
+    description?: Nullable<string>;
+    email?: Nullable<string>;
+    id: string;
+    image: ImageEntity;
+    imageId?: Nullable<string>;
+    name: string;
+    updatedAt: DateTime;
+    whatsapp?: Nullable<string>;
+}
+
+export interface PointEntityConnection {
+    edges: PointEntityEdge[];
+    pageInfo: PageInfo;
+}
+
+export interface PointEntityEdge {
+    cursor: ConnectionCursor;
+    node: PointEntity;
+}
+
 export interface IQuery {
     image(id: string): ImageEntity | Promise<ImageEntity>;
     images(filter?: Nullable<ImageEntityFilter>, paging?: Nullable<CursorPaging>, sorting?: Nullable<ImageEntitySort[]>): ImageEntityConnection | Promise<ImageEntityConnection>;
@@ -191,6 +295,8 @@ export interface IQuery {
     items(filter?: Nullable<ItemEntityFilter>, paging?: Nullable<CursorPaging>, sorting?: Nullable<ItemEntitySort[]>): ItemEntityConnection | Promise<ItemEntityConnection>;
     me(): UserEntity | Promise<UserEntity>;
     ping(): string | Promise<string>;
+    point(id: string): PointEntity | Promise<PointEntity>;
+    points(filter?: Nullable<PointEntityFilter>, paging?: Nullable<CursorPaging>, sorting?: Nullable<PointEntitySort[]>): PointEntityConnection | Promise<PointEntityConnection>;
     user(id: string): UserEntity | Promise<UserEntity>;
 }
 
