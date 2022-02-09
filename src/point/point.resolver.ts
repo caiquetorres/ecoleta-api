@@ -11,28 +11,31 @@ import {
 import { Protect } from '../common/decorators/protect/protect.decorator'
 
 import { ImageEntity } from '../image/entities/image.entity'
-import { ItemEntity } from './entities/item.entity'
+import { AddressEntity } from './entities/address.entity'
+import { PointEntity } from './entities/point.entity'
 
 import { RoleEnum } from '../common/models/role.enum'
-import { CreateItemInput } from './dtos/create-item.input'
-import { QueryItemsArgs } from './dtos/query-items.args'
-import { UpdateItemInput } from './dtos/update-item.input'
+import { CreatePointInput } from './dtos/create-point.input'
+import { QueryPointsArgs } from './dtos/query-points.args'
+import { UpdatePointInput } from './dtos/update-point.input'
 
 import { ImageService } from '../image/image.service'
-import { ItemService } from './item.service'
+import { AddressService } from './address.service'
+import { PointService } from './point.service'
 
-import { IItem } from './item.interface'
+import { IPoint } from './point.interface'
 
 /**
- * Resolver that deals with all the `queries` and `mutations` related
- * with the `ItemEntity` class.
+ * Resolver that deals with all the `queries` and `mutations`
+ * related with the `point` entity class.
  *
- * @see {@link ItemEntity}
+ * @see {@link PointEntity}
  */
-@Resolver(() => ItemEntity)
-export class ItemResolver {
+@Resolver(() => PointEntity)
+export class PointResolver {
   constructor(
-    private readonly itemService: ItemService,
+    private readonly pointService: PointService,
+    private readonly addressService: AddressService,
     private readonly imageService: ImageService,
   ) {}
 
@@ -43,18 +46,17 @@ export class ItemResolver {
    * data.
    * @returns an object that represents the created entity.
    */
-  @Protect(RoleEnum.admin)
-  @Mutation(() => ItemEntity, {
-    name: 'createItem',
+  @Mutation(() => PointEntity, {
+    name: 'createPoint',
   })
   createOne(
     @Args('input', {
       nullable: false,
-      type: () => CreateItemInput,
+      type: () => CreatePointInput,
     })
-    input: CreateItemInput,
+    input: CreatePointInput,
   ) {
-    return this.itemService.createOne(input)
+    return this.pointService.createOne(input)
   }
 
   /**
@@ -64,14 +66,31 @@ export class ItemResolver {
    * @param id defines the entity unique identifier.
    * @returns an object that represents the found entity.
    */
-  @Query(() => ItemEntity, {
-    name: 'item',
+  @Query(() => PointEntity, {
+    name: 'point',
   })
   getOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
   ) {
-    return this.itemService.getOne(id)
+    return this.pointService.getOne(id)
+  }
+
+  /**
+   * Nested query responsible for finding the related `address`
+   * entity.
+   *
+   * @param item defines the parent entity.
+   * @returns an object that represents the found entity.
+   */
+  @ResolveField(() => AddressEntity, {
+    name: 'address',
+  })
+  getAddressByPointId(
+    @Parent()
+    point: IPoint,
+  ) {
+    return this.addressService.getOne(point.addressId)
   }
 
   /**
@@ -83,11 +102,11 @@ export class ItemResolver {
   @ResolveField(() => ImageEntity, {
     name: 'image',
   })
-  getImage(
+  getImageByPointId(
     @Parent()
-    item: IItem,
+    point: IPoint,
   ) {
-    return this.imageService.getOne(item.imageId)
+    return this.imageService.getOne(point.imageId)
   }
 
   /**
@@ -98,14 +117,14 @@ export class ItemResolver {
    * filtering, sorting and paginating the found entity.
    * @returns an object that contains all the found data.
    */
-  @Query(() => QueryItemsArgs.ConnectionType, {
-    name: 'items',
+  @Query(() => QueryPointsArgs.ConnectionType, {
+    name: 'points',
   })
   getMany(
     @Args()
-    query: QueryItemsArgs,
+    query: QueryPointsArgs,
   ) {
-    return this.itemService.getMany(query)
+    return this.pointService.getMany(query)
   }
 
   /**
@@ -118,19 +137,19 @@ export class ItemResolver {
    * @returns an object that represents the updated entity.
    */
   @Protect(RoleEnum.admin)
-  @Mutation(() => ItemEntity, {
-    name: 'updateItem',
+  @Mutation(() => PointEntity, {
+    name: 'updatePoint',
   })
   updateOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
     @Args('input', {
       nullable: false,
-      type: () => UpdateItemInput,
+      type: () => UpdatePointInput,
     })
-    input: UpdateItemInput,
+    input: UpdatePointInput,
   ) {
-    return this.itemService.updateOne(id, input)
+    return this.pointService.updateOne(id, input)
   }
 
   /**
@@ -141,14 +160,14 @@ export class ItemResolver {
    * @returns an object that represents the disabled entity.
    */
   @Protect(RoleEnum.admin)
-  @Mutation(() => ItemEntity, {
-    name: 'deleteItem',
+  @Mutation(() => PointEntity, {
+    name: 'deletePoint',
   })
   deleteOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
-  ): Promise<ItemEntity> {
-    return this.itemService.deleteOne(id)
+  ): Promise<PointEntity> {
+    return this.pointService.deleteOne(id)
   }
 
   /**
@@ -159,14 +178,14 @@ export class ItemResolver {
    * @returns an object that represents the disabled entity.
    */
   @Protect(RoleEnum.admin)
-  @Mutation(() => ItemEntity, {
-    name: 'disableItem',
+  @Mutation(() => PointEntity, {
+    name: 'disablePoint',
   })
   disableOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
   ) {
-    return this.itemService.disableOne(id)
+    return this.pointService.disableOne(id)
   }
 
   /**
@@ -177,13 +196,13 @@ export class ItemResolver {
    * @returns an object that represents the enabled entity.
    */
   @Protect(RoleEnum.admin)
-  @Mutation(() => ItemEntity, {
-    name: 'enableItem',
+  @Mutation(() => PointEntity, {
+    name: 'enablePoint',
   })
   enableOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
   ) {
-    return this.itemService.enableOne(id)
+    return this.pointService.enableOne(id)
   }
 }

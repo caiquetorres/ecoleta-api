@@ -1,28 +1,27 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
-import { ItemEntity } from './entities/item.entity'
+import { AddressEntity } from './entities/address.entity'
+import { PointEntity } from './entities/point.entity'
 
-import { CreateItemInput } from './dtos/create-item.input'
-import { QueryItemsArgs } from './dtos/query-items.args'
-import { UpdateItemInput } from './dtos/update-item.input'
+import { CreatePointInput } from './dtos/create-point.input'
+import { QueryPointsArgs } from './dtos/query-points.args'
+import { UpdatePointInput } from './dtos/update-point.input'
 
 import { TypeOrmQueryService } from '../common/services/type-orm-query.service'
 
 /**
  * Service that deals with all the business logic related with the
- * `item` entity.
+ * `point` entity.
  */
 @Injectable()
-export class ItemService extends TypeOrmQueryService<ItemEntity> {
+export class PointService extends TypeOrmQueryService<PointEntity> {
   constructor(
-    @InjectRepository(ItemEntity)
-    repository: Repository<ItemEntity>,
+    @InjectRepository(PointEntity)
+    repository: Repository<PointEntity>,
+    @InjectRepository(AddressEntity)
+    private readonly addressRepository: Repository<AddressEntity>,
   ) {
     super(repository)
   }
@@ -30,18 +29,13 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
   /**
    * Method responsible for creating a new entity.
    *
-   * @param input defines an object that contains all the entity data.
+   * @param input defines an object that contains all the entity
+   * data.
    * @returns an object that represents the created entity.
    */
-  async createOne(input: CreateItemInput) {
-    if (await this.repository.findOne({ name: input.name })) {
-      throw new ConflictException(
-        'An item with that name has already been registered',
-      )
-    }
-
-    const item = new ItemEntity(input)
-    return this.repository.save(item)
+  async createOne(input: CreatePointInput) {
+    const point = new PointEntity(input)
+    return this.repository.save(point)
   }
 
   /**
@@ -52,15 +46,15 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
    * @returns an object that represents the found entity.
    */
   async getOne(id: string) {
-    const item = await this.findOneById(id)
+    const point = await this.findOneById(id)
 
-    if (!item) {
+    if (!point) {
       throw new NotFoundException(
-        `The entity identified by ${id} of type ${ItemEntity.name} was not found`,
+        `The entity identified by ${id} of type ${PointEntity.name} was not found`,
       )
     }
 
-    return item
+    return point
   }
 
   /**
@@ -71,8 +65,8 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
    * filtering, sorting and paginating the found entity.
    * @returns an object that contains all the found data.
    */
-  getMany(query: QueryItemsArgs) {
-    return QueryItemsArgs.ConnectionType.createFromPromise(
+  getMany(query: QueryPointsArgs) {
+    return QueryPointsArgs.ConnectionType.createFromPromise(
       (query) => this.query(query),
       query,
     )
@@ -87,46 +81,53 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
    * data.
    * @returns an object that represents the updated entity.
    */
-  async updateOne(id: string, input: UpdateItemInput) {
-    const item = await this.repository.findOne(id)
+  async updateOne(id: string, input: UpdatePointInput) {
+    const point = await this.repository.findOne(id, {
+      relations: ['image', 'address'],
+    })
 
-    if (!item) {
+    if (!point) {
       throw new NotFoundException(
-        `The entity identified by ${id} of type ${ItemEntity.name} was not found`,
+        `The entity identified by ${id} of type ${PointEntity.name} was not found`,
       )
     }
 
-    const { image, ...rest } = input
+    const { image, address, ...rest } = input
 
-    item.image = {
-      ...item.image,
+    point.image = {
+      ...point.image,
       ...image,
     }
 
+    point.address = {
+      ...point.address,
+      ...address,
+    }
+
     return this.repository.save({
-      ...item,
+      ...point,
       ...rest,
     })
   }
 
   /**
-   * Method that deletes the entity based on the sent `id` paramter.
+   * Method that deletes the entity based on the sent `id` parameter.
    *
    * @param id defines the entity unique identifier.
    * @returns an object that represents the deleted entity.
    */
   async deleteOne(id: string) {
-    const item = await this.repository.findOne(id, {
-      relations: ['image'],
+    const point = await this.repository.findOne(id, {
+      relations: ['image', 'address'],
     })
 
-    if (!item) {
+    if (!point) {
       throw new NotFoundException(
-        `The entity identified by ${id} of type ${ItemEntity.name} was not found`,
+        `The entity identified by ${id} of type ${PointEntity.name} was not found`,
       )
     }
 
-    return await this.repository.remove(item)
+    return await this.repository.remove(point)
   }
 
   /**
@@ -137,17 +138,17 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
    * @returns an object that represents the disabled entity.
    */
   async disableOne(id: string) {
-    const item = await this.repository.findOne(id, {
-      relations: ['image'],
+    const point = await this.repository.findOne(id, {
+      relations: ['image', 'address'],
     })
 
-    if (!item) {
+    if (!point) {
       throw new NotFoundException(
-        `The entity identified by ${id} of type ${ItemEntity.name} was not found`,
+        `The entity identified by ${id} of type ${PointEntity.name} was not found`,
       )
     }
 
-    return this.repository.softRemove(item)
+    return this.repository.softRemove(point)
   }
 
   /**
@@ -157,17 +158,17 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
    * @returns an object that represents the enabled entity.
    */
   async enableOne(id: string) {
-    const item = await this.repository.findOne(id, {
+    const point = await this.repository.findOne(id, {
       withDeleted: true,
-      relations: ['image'],
+      relations: ['image', 'address'],
     })
 
-    if (!item) {
+    if (!point) {
       throw new NotFoundException(
-        `The entity identified by ${id} of type ${ItemEntity.name} was not found`,
+        `The entity identified by ${id} of type ${PointEntity.name} was not found`,
       )
     }
 
-    return this.repository.recover(item)
+    return this.repository.recover(point)
   }
 }

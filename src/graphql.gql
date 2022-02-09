@@ -2,6 +2,34 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AddressEntity implements BaseEntity {
+  city: String!
+  country: String!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `created`.
+  """
+  createdAt: DateTime!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `deleted`.
+  """
+  deletedAt: DateTime
+  district: String!
+
+  """
+  Property that defines an `uuid` string type, that represents the entity unique identifier.
+  """
+  id: ID!
+  state: String!
+  street: String!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `updated`.
+  """
+  updatedAt: DateTime!
+}
+
 interface BaseEntity {
   """
   Property that defines a `Date` object, responsible for storing the time when the entity was `created`.
@@ -27,6 +55,14 @@ interface BaseEntity {
 """Cursor for paging through collections"""
 scalar ConnectionCursor
 
+input CreateAddressInput {
+  city: String!
+  country: String!
+  district: String!
+  state: String!
+  street: String!
+}
+
 input CreateImageInput {
   title: String
   url: String!
@@ -37,21 +73,18 @@ input CreateItemInput {
   name: String!
 }
 
-"""Input that handles all the data needed to create a new `user` entity."""
-input CreateUserInput {
-  """
-  Property that defines a `string` object, that represents the user email.
-  """
+input CreatePointInput {
+  address: CreateAddressInput!
+  description: String!
   email: String!
-
-  """
-  Property that defines a `string` object, that represents the user name.
-  """
+  image: CreateImageInput!
   name: String!
+  whatsapp: String!
+}
 
-  """
-  Property that defines a `string` object, that represents the user password.
-  """
+input CreateUserInput {
+  email: String!
+  name: String!
   password: String!
 }
 
@@ -202,21 +235,25 @@ input LoginInput {
 type Mutation {
   createImage(input: CreateImageInput!): ImageEntity!
   createItem(input: CreateItemInput!): ItemEntity!
+  createPoint(input: CreatePointInput!): PointEntity!
 
   """Mutation responsible for creating a new entity"""
   createUser(input: CreateUserInput!): UserEntity!
   deleteImage(id: String!): ImageEntity!
   deleteItem(id: String!): ItemEntity!
+  deletePoint(id: String!): PointEntity!
 
   """Mutation responsible for deleting some entity data"""
   deleteUser(id: String!): UserEntity!
   disableImage(id: String!): ImageEntity!
   disableItem(id: String!): ItemEntity!
+  disablePoint(id: String!): PointEntity!
 
   """Mutation responsible for disabling some entity data"""
   disableUser(id: String!): UserEntity!
   enableImage(id: String!): ImageEntity!
   enableItem(id: String!): ItemEntity!
+  enablePoint(id: String!): PointEntity!
 
   """Mutation responsible for enabling some entity data"""
   enableUser(id: String!): UserEntity!
@@ -225,6 +262,7 @@ type Mutation {
   login(input: LoginInput!): TokenModel!
   updateImage(id: String!, input: UpdateImageInput!): ImageEntity!
   updateItem(id: String!, input: UpdateItemInput!): ItemEntity!
+  updatePoint(id: String!, input: UpdatePointInput!): PointEntity!
 
   """Mutation responsible for updating some entity data"""
   updateUser(id: String!, input: UpdateUserInput!): UserEntity!
@@ -242,6 +280,79 @@ type PageInfo {
 
   """The cursor of the first returned record."""
   startCursor: ConnectionCursor
+}
+
+type PointEntity implements BaseEntity {
+  address: AddressEntity!
+  addressId: String
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `created`.
+  """
+  createdAt: DateTime!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `deleted`.
+  """
+  deletedAt: DateTime
+  description: String
+  email: String
+
+  """
+  Property that defines an `uuid` string type, that represents the entity unique identifier.
+  """
+  id: ID!
+  image: ImageEntity!
+  imageId: String
+  name: String!
+
+  """
+  Property that defines a `Date` object, responsible for storing the time when the entity was `updated`.
+  """
+  updatedAt: DateTime!
+  whatsapp: String
+}
+
+type PointEntityConnection {
+  """Array of edges."""
+  edges: [PointEntityEdge!]!
+
+  """Paging information"""
+  pageInfo: PageInfo!
+}
+
+type PointEntityEdge {
+  """Cursor for this node."""
+  cursor: ConnectionCursor!
+
+  """The node containing the PointEntity"""
+  node: PointEntity!
+}
+
+input PointEntityFilter {
+  addressId: StringFieldComparison
+  and: [PointEntityFilter!]
+  description: StringFieldComparison
+  email: StringFieldComparison
+  imageId: StringFieldComparison
+  name: StringFieldComparison
+  or: [PointEntityFilter!]
+  whatsapp: StringFieldComparison
+}
+
+input PointEntitySort {
+  direction: SortDirection!
+  field: PointEntitySortFields!
+  nulls: SortNulls
+}
+
+enum PointEntitySortFields {
+  addressId
+  description
+  email
+  imageId
+  name
+  whatsapp
 }
 
 type Query {
@@ -273,6 +384,17 @@ type Query {
 
   """Used for testing the api connection"""
   ping: String!
+  point(id: String!): PointEntity!
+  points(
+    """Specify to filter the records returned."""
+    filter: PointEntityFilter = {}
+
+    """Limit or page results."""
+    paging: CursorPaging = {first: 10}
+
+    """Specify to sort results."""
+    sorting: [PointEntitySort!] = []
+  ): PointEntityConnection!
 
   """Query responsible for finding one entity based on the id parameter."""
   user(id: String!): UserEntity!
@@ -315,6 +437,14 @@ type TokenModel {
   token: String!
 }
 
+input UpdateAddressInput {
+  city: String!
+  country: String!
+  district: String!
+  state: String!
+  street: String!
+}
+
 input UpdateImageInput {
   title: String
   url: String!
@@ -325,12 +455,18 @@ input UpdateItemInput {
   name: String!
 }
 
-"""Input that handles all the data needed to update some `user` entity."""
-input UpdateUserInput {
-  """
-  Property that defines a `string` object, that represents the user name.
-  """
+input UpdatePointInput {
+  address: UpdateAddressInput
+  description: String
+  email: String
+  image: UpdateImageInput
   name: String
+  whatsapp: String
+}
+
+input UpdateUserInput {
+  email: String!
+  name: String!
 }
 
 """Entity that represents the project `user` entity."""
@@ -344,23 +480,13 @@ type UserEntity implements BaseEntity {
   Property that defines a `Date` object, responsible for storing the time when the entity was `deleted`.
   """
   deletedAt: DateTime
-
-  """
-  Property that defines a `string` object, that represents the user email.
-  """
   email: String!
 
   """
   Property that defines an `uuid` string type, that represents the entity unique identifier.
   """
   id: ID!
-
-  """
-  Property that defines a `string` object, that represents the user name.
-  """
   name: String!
-
-  """Property that defines an array with all the user roles."""
   roles: [String!]!
 
   """
