@@ -25,8 +25,12 @@ export class CreateItemInput implements Omit<IItem, 'imageId'> {
   /**
    * @inheritdoc
    */
-  @Field({ nullable: true })
-  @IsDefined({ message: 'It is required to send the image' })
+  @Field({
+    nullable: true,
+  })
+  @IsDefined({
+    message: 'It is required to send the image',
+  })
   @ValidateNested()
   @Type(() => CreateImageInput)
   image: CreateImageInput

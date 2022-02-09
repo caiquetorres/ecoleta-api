@@ -96,9 +96,16 @@ export class ItemService extends TypeOrmQueryService<ItemEntity> {
       )
     }
 
+    const { image, ...rest } = input
+
+    item.image = {
+      ...item.image,
+      ...image,
+    }
+
     return this.repository.save({
       ...item,
-      ...input,
+      ...rest,
     })
   }
 

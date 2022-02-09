@@ -39,7 +39,8 @@ export class ItemResolver {
   /**
    * Mutation responsible for creating a new entity.
    *
-   * @param input defines an object that contains all the entity data.
+   * @param input defines an object that contains all the entity
+   * data.
    * @returns an object that represents the created entity.
    */
   @Protect(RoleEnum.admin)
@@ -47,14 +48,18 @@ export class ItemResolver {
     name: 'createItem',
   })
   createOne(
-    @Args('input', { type: () => CreateItemInput })
+    @Args('input', {
+      nullable: false,
+      type: () => CreateItemInput,
+    })
     input: CreateItemInput,
   ) {
     return this.itemService.createOne(input)
   }
 
   /**
-   * Query responsible for finding one entity based on the id parameter.
+   * Query responsible for finding one entity based on the id
+   * parameter.
    *
    * @param id defines the entity unique identifier.
    * @returns an object that represents the found entity.
@@ -119,7 +124,10 @@ export class ItemResolver {
   updateOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
-    @Args('input', { type: () => UpdateItemInput })
+    @Args('input', {
+      nullable: false,
+      type: () => UpdateItemInput,
+    })
     input: UpdateItemInput,
   ) {
     return this.itemService.updateOne(id, input)
