@@ -1,6 +1,13 @@
 import { FilterableField } from '@nestjs-query/query-graphql'
 import { ObjectType } from '@nestjs/graphql'
-import { Column, Entity, JoinColumn, OneToOne, RelationId } from 'typeorm'
+import {
+  Column,
+  DeepPartial,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  RelationId,
+} from 'typeorm'
 
 import { BaseEntity } from '../../common/entities/base.entity'
 import { ImageEntity } from '../../image/entities/image.entity'
@@ -96,7 +103,7 @@ export class PointEntity extends BaseEntity implements IPoint {
 
   //#endregion
 
-  constructor(partial: Partial<IPoint>) {
+  constructor(partial: DeepPartial<IPoint>) {
     super()
     Object.assign(this, partial)
   }
