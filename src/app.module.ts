@@ -1,8 +1,10 @@
+import { HttpModule } from '@nestjs/axios'
 import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { GqlConfigService } from './common/config/gql/gql-config.service'
+import { HttpConfigService } from './common/config/http/http-config.service'
 import { TypeOrmConfigService } from './common/config/typeorm/typeorm-config.service'
 
 import { AppResolver } from './app.resolver'
@@ -32,6 +34,9 @@ import { UserModule } from './user/user.module'
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
+    }),
+    HttpModule.registerAsync({
+      useClass: HttpConfigService,
     }),
   ],
   providers: [AppResolver],
