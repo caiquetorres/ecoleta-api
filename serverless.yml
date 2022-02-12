@@ -1,0 +1,44 @@
+org: caiquetorres
+app: ecoleta-api
+service: api
+
+provider:
+  name: aws
+  stage: prod
+  runtime: nodejs14.x
+
+package:
+  exclude:
+    - .git/**
+    - .husky/**
+    - src/**
+    - test/**
+    - e2e/**
+    - README.md
+    - .env*
+    - .eslint*
+    - .commitlintrc.json
+    - .editorconfig
+    - .nvmrc
+    - docker-compose.yml
+    - .prettierrc
+    - yarn.lock
+    - package.json
+    - tsconfig.json
+    - tsconfig.build.json
+    - nest-cli.json
+    - ormconfig.js
+
+functions:
+  api:
+    handler: dist/lambda.handler
+    name: ecoleta-api-${sls:stage}
+    events:
+      - http:
+          cors: true
+          method: ANY
+          path: /
+      - http:
+          cors: true
+          method: ANY
+          path: '{proxy+}'
