@@ -21,6 +21,7 @@ import { PasswordModule } from './password/password.module'
 import { PermissionModule } from './permission/permission.module'
 import { PointModule } from './point/point.module'
 import { UserModule } from './user/user.module'
+import { LocationModule } from './location/location.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { UserModule } from './user/user.module'
     HttpModule.registerAsync({
       useClass: HttpConfigService,
     }),
+    LocationModule,
   ],
   providers: [
     AppResolver,
