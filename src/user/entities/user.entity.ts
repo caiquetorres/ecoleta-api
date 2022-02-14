@@ -5,7 +5,7 @@ import { BaseEntity } from '../../common/entities/base.entity'
 
 import { RoleEnum } from '../../common/models/role.enum'
 
-import { IUser } from '../user.interface'
+import { IUser } from '../interfaces/user.interface'
 
 /**
  * Entity that represents the `user` entity.

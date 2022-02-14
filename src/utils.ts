@@ -8,7 +8,7 @@ import { AppModule } from './app.module'
  *
  * @returns an object that represents the application.
  */
-export async function createApp(): Promise<INestApplication> {
+export async function createApp() {
   const app = await NestFactory.create(AppModule)
 
   setupPipes(app)
@@ -22,7 +22,7 @@ export async function createApp(): Promise<INestApplication> {
  *
  * @param app stores the application instance
  */
-function setupPipes(app: INestApplication): void {
+function setupPipes(app: INestApplication) {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

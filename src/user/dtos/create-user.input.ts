@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql'
 
-import { IUser } from '../user.interface'
+import { IUser } from '../interfaces/user.interface'
 import { IsDefined, IsEmail, IsString } from 'class-validator'
 
 /**

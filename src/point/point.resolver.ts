@@ -23,7 +23,7 @@ import { ImageService } from '../image/image.service'
 import { AddressService } from './address.service'
 import { PointService } from './point.service'
 
-import { IPoint } from './point.interface'
+import { IPoint } from './interfaces/point.interface'
 
 /**
  * Resolver that deals with all the `queries` and `mutations`
@@ -166,7 +166,7 @@ export class PointResolver {
   deleteOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
-  ): Promise<PointEntity> {
+  ) {
     return this.pointService.deleteOne(id)
   }
 

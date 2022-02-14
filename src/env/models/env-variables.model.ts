@@ -65,32 +65,32 @@ export class EnvVariables {
 
   @IsOptional()
   @IsBoolean({ message: 'It is required to send a boolean value' })
-  public GQL_DEBUG?: boolean
+  GQL_DEBUG?: boolean
 
   @IsOptional()
   @IsBoolean({ message: 'It is required to send a boolean value' })
-  public GQL_PLAYGROUND?: boolean
+  GQL_PLAYGROUND?: boolean
 
   @IsOptional()
   @IsString({ message: 'It is required to send a valid string value' })
-  public GQL_AUTO_SCHEMA_FILE?: string
+  GQL_AUTO_SCHEMA_FILE?: string
 
   @IsOptional()
   @IsBoolean({ message: 'It is required to send a boolean value' })
-  public GQL_SORT_SCHEMA?: boolean
+  GQL_SORT_SCHEMA?: boolean
 
   @IsOptional()
   @IsArray({ message: 'It is required to send an array' })
-  public GQL_TYPE_PATHS?: string[]
+  GQL_TYPE_PATHS?: string[]
 
   @IsOptional()
   @IsString({ message: 'It is required to send a valid string value' })
-  public GQL_DEFINITIONS_PATH?: string
+  GQL_DEFINITIONS_PATH?: string
 
   @IsOptional()
   @IsString({ message: 'It is required to send a valid string value' })
   @IsIn(['class', 'interface'])
-  public GQL_DEFINITIONS_OUTPUT_AS?: 'class' | 'interface'
+  GQL_DEFINITIONS_OUTPUT_AS?: 'class' | 'interface'
 
   //#endregion
 

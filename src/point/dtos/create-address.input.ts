@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql'
 
-import { IAddress } from '../address.interface'
+import { IAddress } from '../interfaces/address.interface'
 import { IsDefined, IsString } from 'class-validator'
 
 /**

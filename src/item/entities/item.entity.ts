@@ -5,7 +5,7 @@ import { Column, Entity, JoinColumn, OneToOne, RelationId } from 'typeorm'
 import { BaseEntity } from '../../common/entities/base.entity'
 import { ImageEntity } from '../../image/entities/image.entity'
 
-import { IItem } from '../item.interface'
+import { IItem } from '../interfaces/item.interface'
 
 /**
  * Entity that represents the `item` entity.

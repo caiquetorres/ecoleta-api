@@ -3,7 +3,7 @@ import { Field, InputType } from '@nestjs/graphql'
 import { UpdateImageInput } from '../../image/dtos/update-image.input'
 import { UpdateAddressInput } from './update-address.input'
 
-import { IPoint } from '../point.interface'
+import { IPoint } from '../interfaces/point.interface'
 import { Type } from 'class-transformer'
 import { IsEmail, IsOptional, IsString, ValidateNested } from 'class-validator'
 

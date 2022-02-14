@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql'
 
 import { CreateImageInput } from '../../image/dtos/create-image.input'
 
-import { IItem } from '../item.interface'
+import { IItem } from '../interfaces/item.interface'
 import { Type } from 'class-transformer'
 import { IsDefined, IsString, ValidateNested } from 'class-validator'
 

@@ -4,7 +4,7 @@ import { Column, Entity } from 'typeorm'
 
 import { BaseEntity } from '../../common/entities/base.entity'
 
-import { IImage } from '../image.interface'
+import { IImage } from '../interfaces/image.interface'
 
 /**
  * Entity that represents an application `image`.

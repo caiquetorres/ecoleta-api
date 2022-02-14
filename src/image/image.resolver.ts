@@ -112,7 +112,7 @@ export class ImageResolver {
   deleteOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
-  ): Promise<ImageEntity> {
+  ) {
     return this.service.deleteOne(id)
   }
 

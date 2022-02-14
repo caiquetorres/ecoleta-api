@@ -5,7 +5,7 @@ import { Callback, Context, Handler } from 'aws-lambda'
 
 let server: Handler
 
-async function bootstrap(): Promise<Handler> {
+async function bootstrap() {
   const app = await createApp()
   await app.init()
 
@@ -25,7 +25,7 @@ export async function handler(
   event: unknown,
   context: Context,
   callback: Callback,
-): Promise<void> {
+) {
   server = server ?? (await bootstrap())
   return server(event, context, callback)
 }

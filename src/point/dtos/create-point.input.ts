@@ -3,7 +3,7 @@ import { InputType, Field } from '@nestjs/graphql'
 import { CreateImageInput } from '../../image/dtos/create-image.input'
 import { CreateAddressInput } from './create-address.input'
 
-import { IPoint } from '../point.interface'
+import { IPoint } from '../interfaces/point.interface'
 import { Type } from 'class-transformer'
 import {
   IsDefined,

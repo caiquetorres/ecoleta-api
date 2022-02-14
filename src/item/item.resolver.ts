@@ -21,7 +21,7 @@ import { UpdateItemInput } from './dtos/update-item.input'
 import { ImageService } from '../image/image.service'
 import { ItemService } from './item.service'
 
-import { IItem } from './item.interface'
+import { IItem } from './interfaces/item.interface'
 
 /**
  * Resolver that deals with all the `queries` and `mutations` related
@@ -147,7 +147,7 @@ export class ItemResolver {
   deleteOne(
     @Args('id', { nullable: false }, ParseUUIDPipe)
     id: string,
-  ): Promise<ItemEntity> {
+  ) {
     return this.itemService.deleteOne(id)
   }
 

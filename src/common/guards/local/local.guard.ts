@@ -2,6 +2,8 @@ import { ExecutionContext, Injectable } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { AuthGuard } from '@nestjs/passport'
 
+import { Request } from 'express'
+
 /**
  * Guard that is responsible for validating the username and the
  * password before the user can perform any action.
@@ -15,9 +17,9 @@ export class LocalGuard extends AuthGuard('local') {
    * into.
    * @returns an object that represents the request.
    */
-  public getRequest(context: ExecutionContext): Request {
+  getRequest(context: ExecutionContext) {
     const gqlContext = GqlExecutionContext.create(context)
-    const { req } = gqlContext.getContext()
+    const { req } = gqlContext.getContext<{ req: Request }>()
     req.body = gqlContext.getArgs().input
     return req
   }

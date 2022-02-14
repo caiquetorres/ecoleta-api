@@ -4,7 +4,7 @@ import { Column, DeepPartial, Entity } from 'typeorm'
 
 import { BaseEntity } from '../../common/entities/base.entity'
 
-import { IAddress } from '../address.interface'
+import { IAddress } from '../interfaces/address.interface'
 
 /**
  * Entity that represents the `address` entity.

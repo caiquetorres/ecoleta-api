@@ -13,7 +13,7 @@ import { BaseEntity } from '../../common/entities/base.entity'
 import { ImageEntity } from '../../image/entities/image.entity'
 import { AddressEntity } from './address.entity'
 
-import { IPoint } from '../point.interface'
+import { IPoint } from '../interfaces/point.interface'
 
 /**
  * Entity that represents the `point` entity.

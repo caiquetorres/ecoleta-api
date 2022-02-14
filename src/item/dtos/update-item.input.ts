@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql'
 
 import { UpdateImageInput } from '../../image/dtos/update-image.input'
 
-import { IItem } from '../item.interface'
+import { IItem } from '../interfaces/item.interface'
 import { Type } from 'class-transformer'
 import { IsOptional, IsString, ValidateNested } from 'class-validator'
 

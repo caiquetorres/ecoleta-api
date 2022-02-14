@@ -1,4 +1,4 @@
-import { IImage } from '../image/image.interface'
+import { IImage } from '../../image/interfaces/image.interface'
 
 /**
  * Interface that handles all the `item` entity properties.

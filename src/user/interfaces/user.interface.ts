@@ -1,4 +1,4 @@
-import { RoleEnum } from '../common/models/role.enum'
+import { RoleEnum } from '../../common/models/role.enum'
 
 /**
  * Interface that handles all the `user` entity properties.

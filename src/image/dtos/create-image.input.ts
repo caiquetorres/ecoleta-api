@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql'
 
-import { IImage } from '../image.interface'
+import { IImage } from '../interfaces/image.interface'
 import { IsDefined, IsOptional, IsString, IsUrl } from 'class-validator'
 
 /**
