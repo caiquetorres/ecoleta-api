@@ -7,6 +7,8 @@ import { IState } from '../interfaces/state.interface'
  */
 @ObjectType()
 export class StateModel implements IState {
+  //#region Public properties
+
   /**
    * @inheritdoc
    */
@@ -18,4 +20,10 @@ export class StateModel implements IState {
    */
   @Field()
   iso2: string
+
+  //#endregion
+
+  constructor(partial: Partial<IState>) {
+    Object.assign(this, partial)
+  }
 }

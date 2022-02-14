@@ -7,6 +7,8 @@ import { ICountry } from '../interfaces/country.interface'
  */
 @ObjectType()
 export class CountryModel implements ICountry {
+  //#region Public properties
+
   /**
    * @inheritdoc
    */
@@ -18,4 +20,10 @@ export class CountryModel implements ICountry {
    */
   @Field()
   iso2: string
+
+  //#endregion
+
+  constructor(partial: Partial<ICountry>) {
+    Object.assign(this, partial)
+  }
 }

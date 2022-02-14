@@ -7,9 +7,17 @@ import { ICity } from '../interfaces/city.interface'
  */
 @ObjectType()
 export class CityModel implements ICity {
+  //#region Public properties
+
   /**
    * @inheritdoc
    */
   @Field()
   name: string
+
+  //#endregion
+
+  constructor(partial: Partial<ICity>) {
+    Object.assign(this, partial)
+  }
 }
