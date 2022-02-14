@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
-import { AddressEntity } from './entities/address.entity'
 import { PointEntity } from './entities/point.entity'
 
 import { CreatePointInput } from './dtos/create-point.input'
@@ -20,8 +19,6 @@ export class PointService extends TypeOrmQueryService<PointEntity> {
   constructor(
     @InjectRepository(PointEntity)
     repository: Repository<PointEntity>,
-    @InjectRepository(AddressEntity)
-    private readonly addressRepository: Repository<AddressEntity>,
   ) {
     super(repository)
   }
