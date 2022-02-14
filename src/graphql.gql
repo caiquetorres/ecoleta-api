@@ -52,8 +52,17 @@ interface BaseEntity {
   updatedAt: DateTime!
 }
 
+type CityModel {
+  name: String!
+}
+
 """Cursor for paging through collections"""
 scalar ConnectionCursor
+
+type CountryModel {
+  iso2: String!
+  name: String!
+}
 
 input CreateAddressInput {
   city: String!
@@ -356,6 +365,9 @@ enum PointEntitySortFields {
 }
 
 type Query {
+  cities(countryIso2: String!, stateIso2: String!): [CityModel!]!
+  countries: [CountryModel!]!
+  country(iso2: String!): CountryModel!
   image(id: String!): ImageEntity!
   images(
     """Specify to filter the records returned."""
@@ -395,6 +407,8 @@ type Query {
     """Specify to sort results."""
     sorting: [PointEntitySort!] = []
   ): PointEntityConnection!
+  state(countryIso2: String!, iso2: String!): StateModel!
+  states(countryIso2: String!): [StateModel!]!
 
   """Query responsible for finding one entity based on the id parameter."""
   user(id: String!): UserEntity!
@@ -410,6 +424,11 @@ enum SortDirection {
 enum SortNulls {
   NULLS_FIRST
   NULLS_LAST
+}
+
+type StateModel {
+  iso2: String!
+  name: String!
 }
 
 input StringFieldComparison {

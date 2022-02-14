@@ -192,6 +192,15 @@ export interface AddressEntity extends BaseEntity {
     updatedAt: DateTime;
 }
 
+export interface CityModel {
+    name: string;
+}
+
+export interface CountryModel {
+    iso2: string;
+    name: string;
+}
+
 export interface ImageEntity extends BaseEntity {
     createdAt: DateTime;
     deletedAt?: Nullable<DateTime>;
@@ -288,6 +297,9 @@ export interface PointEntityEdge {
 }
 
 export interface IQuery {
+    cities(countryIso2: string, stateIso2: string): CityModel[] | Promise<CityModel[]>;
+    countries(): CountryModel[] | Promise<CountryModel[]>;
+    country(iso2: string): CountryModel | Promise<CountryModel>;
     image(id: string): ImageEntity | Promise<ImageEntity>;
     images(filter?: Nullable<ImageEntityFilter>, paging?: Nullable<CursorPaging>, sorting?: Nullable<ImageEntitySort[]>): ImageEntityConnection | Promise<ImageEntityConnection>;
     item(id: string): ItemEntity | Promise<ItemEntity>;
@@ -296,7 +308,14 @@ export interface IQuery {
     ping(): string | Promise<string>;
     point(id: string): PointEntity | Promise<PointEntity>;
     points(filter?: Nullable<PointEntityFilter>, paging?: Nullable<CursorPaging>, sorting?: Nullable<PointEntitySort[]>): PointEntityConnection | Promise<PointEntityConnection>;
+    state(countryIso2: string, iso2: string): StateModel | Promise<StateModel>;
+    states(countryIso2: string): StateModel[] | Promise<StateModel[]>;
     user(id: string): UserEntity | Promise<UserEntity>;
+}
+
+export interface StateModel {
+    iso2: string;
+    name: string;
 }
 
 export interface TokenModel {
