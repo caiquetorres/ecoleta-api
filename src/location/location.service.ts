@@ -12,9 +12,23 @@ import { ICountry } from './interfaces/country.interface'
 import { IState } from './interfaces/state.interface'
 import { lastValueFrom, map } from 'rxjs'
 
+/**
+ * Service that deals with all the business logic related with
+ * countries, states and cities.
+ *
+ * @see https://countrystatecity.in/
+ */
 @Injectable()
 export class LocationService {
+  /**
+   * Property that defines the `CountryStateCity` url.
+   */
   private readonly baseUrl: string
+
+  /**
+   * Property that defines an object that contains all the headers
+   * that will sent to the `CountryStateCity`.
+   */
   private readonly headers: Record<string, string | number | boolean>
 
   constructor(
@@ -27,6 +41,12 @@ export class LocationService {
     }
   }
 
+  /**
+   * Method that finds one `country` based on it `ISO2`.
+   *
+   * @param iso2 defines the `country` `ISO2` code
+   * @returns an object that contains all the `country` data.
+   */
   getOneCountry(iso2: string) {
     return lastValueFrom<CountryModel>(
       this.httpService
@@ -38,6 +58,11 @@ export class LocationService {
     )
   }
 
+  /**
+   * Method that finds all the registered countries.
+   *
+   * @returns an array with all the found countries.
+   */
   getManyCountries() {
     return lastValueFrom<CountryModel[]>(
       this.httpService
@@ -53,6 +78,12 @@ export class LocationService {
     )
   }
 
+  /**
+   * Method that finds one `state` based on it `ISO2`.
+   *
+   * @param iso2 defines the `state` `ISO2` code
+   * @returns an object that contains all the `state` data.
+   */
   getOneState(iso2: string, countryIso2: string) {
     return lastValueFrom<StateModel>(
       this.httpService
@@ -64,6 +95,11 @@ export class LocationService {
     )
   }
 
+  /**
+   * Method that finds all the registered states.
+   *
+   * @returns an array with all the found states.
+   */
   getManyStates(countryIso2: string) {
     return lastValueFrom<StateModel[]>(
       this.httpService
@@ -75,6 +111,11 @@ export class LocationService {
     )
   }
 
+  /**
+   * Method that finds all the registered cities.
+   *
+   * @returns an array with all the found cities.
+   */
   getManyCities(stateIso2: string, countryIso2: string) {
     return lastValueFrom<CityModel[]>(
       this.httpService

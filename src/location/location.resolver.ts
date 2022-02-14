@@ -6,10 +6,20 @@ import { StateModel } from './dtos/state.model'
 
 import { LocationService } from './location.service'
 
+/**
+ * Resolver that deals with all the `queries` related with
+ * locations.
+ */
 @Resolver(() => CountryModel)
 export class LocationResolver {
   constructor(private readonly locationService: LocationService) {}
 
+  /**
+   * Query that finds one `country` based on it `ISO2`.
+   *
+   * @param iso2 defines the `country` `ISO2` code
+   * @returns an object that contains all the `country` data.
+   */
   @Query(() => CountryModel, {
     name: 'country',
   })
@@ -20,6 +30,11 @@ export class LocationResolver {
     return this.locationService.getOneCountry(iso2)
   }
 
+  /**
+   * Query that finds all the registered countries.
+   *
+   * @returns an array with all the found countries.
+   */
   @Query(() => [CountryModel], {
     name: 'countries',
   })
@@ -27,6 +42,12 @@ export class LocationResolver {
     return this.locationService.getManyCountries()
   }
 
+  /**
+   * Query that finds one `state` based on it `ISO2`.
+   *
+   * @param iso2 defines the `state` `ISO2` code
+   * @returns an object that contains all the `state` data.
+   */
   @Query(() => StateModel, {
     name: 'state',
   })
@@ -39,6 +60,11 @@ export class LocationResolver {
     return this.locationService.getOneState(iso2, countryIso2)
   }
 
+  /**
+   * Query that finds all the registered states.
+   *
+   * @returns an array with all the found states.
+   */
   @Query(() => [StateModel], {
     name: 'states',
   })
@@ -49,6 +75,11 @@ export class LocationResolver {
     return this.locationService.getManyStates(countryIso2)
   }
 
+  /**
+   * Query that finds all the registered cities.
+   *
+   * @returns an array with all the found cities.
+   */
   @Query(() => [CityModel], {
     name: 'cities',
   })
