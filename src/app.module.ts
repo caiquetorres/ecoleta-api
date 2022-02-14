@@ -17,11 +17,11 @@ import { AuthModule } from './auth/auth.module'
 import { EnvModule } from './env/env.module'
 import { ImageModule } from './image/image.module'
 import { ItemModule } from './item/item.module'
+import { LocationModule } from './location/location.module'
 import { PasswordModule } from './password/password.module'
 import { PermissionModule } from './permission/permission.module'
 import { PointModule } from './point/point.module'
 import { UserModule } from './user/user.module'
-import { LocationModule } from './location/location.module';
 
 @Module({
   imports: [
@@ -32,6 +32,7 @@ import { LocationModule } from './location/location.module';
     ItemModule,
     ImageModule,
     PointModule,
+    LocationModule,
     EnvModule.forRoot({
       envFilePath: ['.env'],
     }),
@@ -47,14 +48,13 @@ import { LocationModule } from './location/location.module';
     HttpModule.registerAsync({
       useClass: HttpConfigService,
     }),
-    LocationModule,
   ],
   providers: [
     AppResolver,
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: ThrottlerGuard,
+    // },
   ],
 })
 export class AppModule {}
