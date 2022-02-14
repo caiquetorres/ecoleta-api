@@ -139,6 +139,18 @@ export class EnvVariables {
 
   //#endregion
 
+  //#region  Country State City
+
+  @IsDefined({ message: 'It is required to set the "CSC_URL"' })
+  @IsString({ message: 'It is required to set a valid string value' })
+  CSC_URL: string
+
+  @IsDefined({ message: 'It is required to set the "CSC_Token"' })
+  @IsString({ message: 'It is required to set a valid string value' })
+  CSC_TOKEN: string
+
+  //#endregion
+
   //#region Swagger
 
   @IsDefined({ message: 'It is required to set the swagger title' })
